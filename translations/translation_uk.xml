@@ -106,5 +106,8 @@
 
 		<text name="rw_settings_moistureYieldFactor_label" text="Коефіцієнт вологості"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Змінити приріст врожайності, що додається завдяки вологості"/>
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
 	</texts>
 </l10n>

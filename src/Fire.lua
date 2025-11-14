@@ -277,7 +277,7 @@ end
 
 function Fire:update(fireSystem, isRaining)
 
-	local timescale = math.min(self.timeSinceLastUpdate, 2500)
+	local timescale = math.min(self.timeSinceLastUpdate, 3500)
 
 	if self.isInRange then
 
@@ -292,7 +292,7 @@ function Fire:update(fireSystem, isRaining)
 
 	local x, z = self.position[1], self.position[3]
 	
-	local step = 0.000018 * timescale
+	local step = 0.000026 * timescale
 
 	local isOnCultivatedGround, shrinkFactor = self.isOnCultivatedGround, isRaining and 10 or 1
 
@@ -307,8 +307,8 @@ function Fire:update(fireSystem, isRaining)
 
 	setWorldTranslation(self.node, x, self.position[2], z)
 
-	local burnTime = self.burnTime + math.min(0.0012 * timescale, 1.5)
-	local fuel = math.clamp(self.fuel - self.width * self.height * timescale * 0.00065 * shrinkFactor, 0, 2500)
+	local burnTime = self.burnTime + math.min(0.0028 * timescale, 1.5)
+	local fuel = math.clamp(self.fuel - self.width * self.height * timescale * 0.0006 * shrinkFactor, 0, 2500)
 
 	local width, height = self.width, self.height
 
@@ -347,9 +347,13 @@ function Fire:update(fireSystem, isRaining)
 				local fruitTypeIndex = getDensityTypeIndexAtWorldPos(dataPlaneId, burnX, 0, burnZ)
 				local fruitType = g_fruitTypeManager:getFruitTypeByDensityTypeIndex(fruitTypeIndex)
 
-				local growthState = getDensityStatesAtWorldPos(dataPlaneId, burnX, 0, burnZ)
+				if fruitType ~= nil then
 
-				if growthState > 0 and growthState <= fruitType.maxHarvestingGrowthState then burnArea = burnArea + 1 end
+					local growthState = getDensityStatesAtWorldPos(dataPlaneId, burnX, 0, burnZ)
+
+					if growthState > 0 and growthState <= fruitType.maxHarvestingGrowthState then burnArea = burnArea + 1 end
+
+				end
 
 				totalBurnArea = totalBurnArea + 1
 
@@ -369,7 +373,7 @@ function Fire:update(fireSystem, isRaining)
 			width = math.min(width + burnDistance * 0.0006, 1.4)
 			height = math.min(width + burnDistance * 0.00075, 1.6)
 
-			if self.timeSinceLastChild >= 350 and fuel > width * height * 100 and numFires < 20 then
+			if self.timeSinceLastChild >= 350 and fuel > width * height * 100 and numFires < 25 then
 			
 				self.width, self.height = width, height
 				self.timeSinceLastChild = 0

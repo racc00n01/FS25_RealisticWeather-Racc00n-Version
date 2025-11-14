@@ -1,16 +1,14 @@
-<modDesc descVersion="97">
+<modDesc descVersion="104">
     <author>Arrow</author>
-    <version>1.1.2.6</version>
+    <version>1.2.1.0</version>
     <title>
         <en>Realistic Weather</en>
         <de>Realistisches Wetter</de>
         <fr>Météo Réaliste</fr>
-        <pl>Realistyczna Pogoda</pl>
-        <it>Meteo Realistico</it>
     </title>
     <description>
         <en>
-        <![CDATA[ An overhaul to the weather system, focusing mainly on snow.
+        <![CDATA[ An overhaul to the weather system, focusing mainly on snow and ground moisture.
 Features:
 
 - Adds 3 new "disaster" weather events, blizzards, droughts and extremely thick fog
@@ -23,6 +21,12 @@ Features:
 - Wheel physics changed significantly
 - Maximum amount of snow has been doubled
 - Livestock will leave "footprints" in deep snow (only on high-end systems)
+
+- Crop Fires:
+--- Dynamic crop fires can occur in certain conditions
+--- Fires will spread and move over time and new fires will spawn with their own identity
+--- Fires can be put out by cultivating the field, or they will eventually die out on their own when the crop is fully destroyed or when starts to rain
+--- Fires will actively try to avoid and escape cultivated or barren land
 
 - Blizzards:
 --- Blizzards are rare events that will cause significant snowfall in a short period of time, causing up to 1 metre high snow
@@ -56,89 +60,58 @@ https://github.com/Arrow-kb/FS25_RealisticWeather
 
 Changelog:
 
-1.1.2.6
-- Added irrigation missions
-- Added irrigation support for slurry tankers (3x more output than sprayers)
-- Changes to the fire model
-- Changes to the moisture map generation for more variation
+1.2.1.0
+- Added MP fog syncing (still testing)
+- Performance improvements (should reduce occurences of emergency garbage collection, will increase constant lag on lower performance index settings, it is recommended to raise this/make the moisture map larger)
+- Added paging to moisture screen
+- Fixed PF and RW yield compatibility
+- Fixed SoundManager.lua:1179: attempt to index boolean with 'soundSample'
+- Fixed error when saving irrigation missions
+- Added/updated various translations
+
+1.2.0.0
+- Added dynamic crop fires (read above)
+- Added dynamic field flooding
+- Added slurry tanker irrigation support (3x more output than sprayers)
+- Added irrigation contracts
+- Added settings menu to the general settings page
+- Added a moisture screen to the menu where you can view moisture related values for owned fields / all fields and an option to toggle irrigation for fields
+- Added default harvest moisture range for new modded crop types
+- Reworked crop withering at low moisture to visually wither the crops instead of creating empty spaces
 - Reworked moisture harvest yield
 - Reworked sprayer irrigation to be more accurate
-- Added the following settings options:
---- Change moisture harvest yield factor
+- Reworked the moisture map generation system for more variation
+- Significant performance improvements
 - Lowered the spray effect on moisture
-- Rebuild moisture map setting is now synced on MP
-- Improved fire performance
-- Significantly improved hourly lag
-- Fixed a fire sync issue when loading in MP
-
-1.1.2.5
-- Performance improvement for passive irrigation (- ~64% average processing time)
-- Performance improvements for various systems reading and/or changing moisture system values (- ~26% average processing time)
-- Added default harvest moisture range for unrecognised modded crop types
-- Fixed spraying not syncing on MP
-
-1.1.2.4
-- Added crop fires
-- Possible fix for memory leaks
-- Changed withering so younger crops will create an empty space instead of changing to the withered state
-- Added the following settings options:
---- Enable/disable crop fires
-- Prevented fog from spawning 2 days in a row
-- Fixed a puddle sync issue when loading in mp
-
-1.1.2.3
-- Added dynamic puddles which form at high moisture and grow/shrink based on soil moisture, and gradually flow downhill
-- Withered crops are now shown as withered instead of creating empty spaces
-- Added the following settings options:
---- Enable/disable puddles
---- Grass moisture gain modifier
---- Grass moisture loss modifier
-- Added teleport button to the moisture screen
-- Fixed irrigation info being shown on certain cells in the moisture screen after switching from limited to detailed
-- Added Ukrainian translation
-
-1.1.2.2
-- Added multiplayer support for settings menu (except rebuilding moisture map)
-- Performance improvements
 - Reduced chance of blizzards and droughts
-- Added irrigation activity and cost columns to the moisture menu for "Limited" mode
-- Added the following settings options:
---- Enable/disable blizzards
---- Enable/disable droughts
+- Improved how the moisture system interprets rainfall
+- Fixed an issue causing the game to permanently freeze
+- Fixed spraying not syncing on MP
+- Fixed empty bales remaining after rotting
+- Possible fix for memory leaks
+- Various bug fixes
+- Prevented fog from spawning 2 days in a row
+- Added Ukrainian translation
 - Added Brazilian Portuguese translation
 - Added Russian translation
-- Fixed error: attempt to index nil with 'isActive'
-- Fixed error: attempt to perform arithmetic (add) on nil and number
-- Fixed an issue causing the moisture to show higher than it is while irrigating
-
-1.1.2.1
-- Fixed an error when opening the moisture menu possibly related to custom fields
-- Fixed the moisture menu not being in the right position in the tab
-- Fixed heavy lag upon opening/refreshing the moisture menu
-- Fixed the settings being reset to default when saving the game
-- Limited the moisture menu to only show information for fields with less than 1500 cells on "Detailed" mode
-- The moisture menu is now set to "Limited" by default
-- Added working irrigation button for "Limited" moisture screen based on the highlighted field
-- Improved the "Performance Index" setting mechanics
 - Added Spanish translation
-
-1.1.2.0
-- Added a settings menu (located in the Game Settings menu)
-- Added the following settings options:
+- Added Czech translation
+- Added the following options to the settings menu:
+--- Ability to rebuild the moisture map with custom cell dimensions
 --- Enable/disable withering
 --- Withering chance modifier
 --- Moisture gain modifier
 --- Moisture loss modifier
+--- Grass moisture gain modifier
+--- Grass moisture loss modifier
 --- Performance index modifier
 --- Moisture overlay behaviour
 --- Moisture screen behaviour
---- Ability to rebuild the moisture map with custom arguments
-- Fixed empty bales remaining after rotting
-
-1.1.1.0
-- Added new moisture menu, containing various moisture related values for cells across owned fields and an option to toggle irrigation for fields inside the menu
-- Improved how the moisture system interprets rainfall
-- Increased sprayer irrigation gain
+--- Enable/disable blizzards
+--- Enable/disable droughts
+--- Enable/disable crop fires
+--- Enable/disable puddles
+--- Change moisture harvest yield factor
 
 1.1.0.2
 - Fixed an issue causing certain mods to freeze the game
@@ -190,6 +163,12 @@ Merkmale:
 - Die maximale Schneemenge wurde verdoppelt
 - Vieh hinterlässt „Fußabdrücke“ im Tiefschnee (nur auf High-End-Systemen)
 
+- Brände in der Landwirtschaft:
+--- Dynamische Erntebrände können unter bestimmten Bedingungen auftreten
+--- Brände breiten sich aus und bewegen sich mit der Zeit, und es entstehen neue Brände mit ihrer eigenen Identität
+--- Brände können durch die Kultivierung des Feldes gelöscht werden, oder sie erlöschen schließlich von selbst, wenn die Ernte vollständig zerstört ist oder wenn es zu regnen beginnt
+--- Brände werden aktiv versuchen, bebautes oder unfruchtbares Land zu meiden und zu verlassen.
+
 - Schneestürme:
 --- Blizzards sind seltene Ereignisse, die in kurzer Zeit erhebliche Schneefälle verursachen und bis zu 1 Meter hohen Schnee hervorrufen können
 --- Die Temperatur während eines Blizzards kann bis zu -15 Grad Celsius sinken
@@ -221,6 +200,50 @@ https://github.com/Arrow-kb/FS25_RealisticWeather
 
 
 Änderungsliste:
+
+1.2.0.0
+- Dynamische Erntebrände hinzugefügt (siehe oben)
+- Dynamische Feldflutung hinzugefügt
+- Unterstützung für Gülletankwagenbewässerung (3x mehr Leistung als Sprühgeräte)
+- Bewässerungsverträge hinzugefügt
+- Einstellungsmenü auf der allgemeinen Einstellungsseite hinzugefügt
+- Das Menü wurde um einen Feuchtigkeitsbildschirm erweitert, in dem Sie die Feuchtigkeitswerte für eigene Felder / alle Felder und eine Option zum Umschalten der Bewässerung für Felder anzeigen können
+- Standard-Erntefeuchtigkeitsbereich für neue modifizierte Pflanzentypen hinzugefügt
+- Das Verwelken von Feldfrüchten bei niedriger Feuchtigkeit wurde überarbeitet, so dass die Feldfrüchte nun visuell verwelken, anstatt leere Flächen zu erzeugen
+- Überarbeitung des Ernteertrags bei Feuchtigkeit
+- Die Bewässerung mit Sprühgeräten wurde überarbeitet, um genauer zu sein
+- Das System zur Erstellung von Feuchtigkeitskarten wurde überarbeitet, um mehr Variation zu ermöglichen.
+- Signifikante Leistungsverbesserungen
+- Der Sprüheffekt auf die Feuchtigkeit wurde verringert
+- Verringertes Risiko von Schneestürmen und Dürreperioden
+- Verbesserte Interpretation der Niederschläge durch das Feuchtigkeitssystem
+- Ein Problem wurde behoben, das zum dauerhaften Einfrieren des Spiels führte
+- Das Sprühen wurde im MP nicht synchronisiert.
+- Leere Ballen nach dem Verrotten wurden behoben
+- Möglicher Fix für Speicherlecks
+- Verschiedene Fehlerbehebungen
+- Verhindert, dass Nebel 2 Tage hintereinander auftaucht
+- Ukrainische Übersetzung hinzugefügt
+- Brasilianisch-portugiesische Übersetzung hinzugefügt
+- Russische Übersetzung hinzugefügt
+- Spanische Übersetzung hinzugefügt
+- Tschechische Übersetzung hinzugefügt
+- Die folgenden Optionen wurden zum Einstellungsmenü hinzugefügt:
+--- Möglichkeit, die Feuchtigkeitskarte mit benutzerdefinierten Zellabmessungen neu zu erstellen
+--- Aktivieren/Deaktivieren des Verwelkens
+--- Modifikator der Verwelkungswahrscheinlichkeit
+--- Modifikator für Feuchtigkeitszunahme
+--- Modifikator für Feuchtigkeitsverlust
+--- Modifikator für die Feuchtigkeitszunahme von Gras
+--- Modifikator für den Feuchtigkeitsverlust des Grases
+--- Modifikator für den Leistungsindex
+--- Verhalten der Feuchtigkeitsüberlagerung
+--- Verhalten des Feuchtigkeitsbildschirms
+--- Aktivieren/Deaktivieren von Schneestürmen
+--- Dürren aktivieren/deaktivieren
+--- Erntebrände aktivieren/deaktivieren
+--- Pfützen aktivieren/deaktivieren
+--- Feuchte-Ertragsfaktor ändern
 
 1.1.0.2
 - Ein Problem wurde behoben, das dazu führte, dass bestimmte Mods das Spiel einfroren
@@ -272,6 +295,12 @@ Caractéristiques :
 - La quantité maximale de neige a été doublée.
 - Le bétail laissera des « empreintes » dans la neige épaisse (uniquement sur les systèmes haut de gamme).
 
+- Incendies de cultures :
+--- Des incendies dynamiques de cultures peuvent se produire dans certaines conditions
+--- Les incendies se propagent et se déplacent avec le temps et de nouveaux incendies apparaissent avec leur propre identité.
+--- Les incendies peuvent être éteints en cultivant le champ, ou ils finiront par s'éteindre d'eux-mêmes lorsque la récolte sera complètement détruite ou lorsqu'il commencera à pleuvoir.
+--- Les incendies essaieront activement d'éviter et de fuir les terres cultivées ou stériles.
+
 - Blizzards :
 --- Les blizzards sont des événements rares qui provoquent d'importantes chutes de neige en peu de temps, avec des hauteurs de neige pouvant atteindre 1 mètre.
 --- La température pendant les blizzards peut descendre jusqu'à -15 degrés Celsius.
@@ -303,6 +332,50 @@ https://github.com/Arrow-kb/FS25_RealisticWeather
 
 
 Journal des modifications :
+
+1.2.0.0
+- Ajout des incendies de cultures dynamiques (voir ci-dessus)
+- Ajout de l'inondation dynamique des champs
+- Ajout du support de l'irrigation par camion-citerne à lisier (3x plus de rendement que les pulvérisateurs)
+- Ajout de contrats d'irrigation
+- Ajout d'un menu de réglages à la page des réglages généraux
+- Ajout d'un écran d'humidité au menu où vous pouvez voir les valeurs liées à l'humidité pour les champs possédés / tous les champs et une option pour basculer l'irrigation pour les champs
+- Ajout d'une plage d'humidité de récolte par défaut pour les nouveaux types de cultures moddés.
+- Remaniement de la flétrissure des cultures en cas de faible taux d'humidité afin de flétrir visuellement les cultures au lieu de créer des espaces vides.
+- Rénovation du rendement de la récolte en fonction de l'humidité
+- Remaniement de l'irrigation par pulvérisateur pour plus de précision
+- Révision du système de génération des cartes d'humidité pour plus de variations.
+- Améliorations significatives des performances
+- Réduction de l'effet de la pulvérisation sur l'humidité
+- Réduction des risques de blizzard et de sécheresse
+- Amélioration de l'interprétation des précipitations par le système d'humidité
+- Correction d'un problème entraînant le blocage permanent du jeu
+- Correction de la non synchronisation de la pulvérisation en mode MP
+- Correction des balles vides restant après le pourrissement
+- Correction possible des fuites de mémoire
+- Diverses corrections de bugs
+- Prévention de l'apparition du brouillard deux jours de suite
+- Ajout de la traduction en ukrainien
+- Ajout de la traduction en portugais brésilien
+- Ajout de la traduction en russe
+- Ajout de la traduction en espagnol
+- Ajout de la traduction en tchèque
+- Ajout des options suivantes au menu des paramètres :
+--- Possibilité de reconstruire la carte d'humidité avec des dimensions de cellules personnalisées
+--- Activer/désactiver le flétrissement
+--- Modificateur de chance de flétrissement
+--- Modificateur de gain d'humidité
+--- Modificateur de perte d'humidité
+--- Modificateur de gain d'humidité de l'herbe
+--- Modificateur de la perte d'humidité de l'herbe
+--- Modificateur de l'indice de performance
+--- Comportement du recouvrement de l'humidité
+--- Comportement de l'écran d'humidité
+--- Activer/désactiver les blizzards
+--- Activer/désactiver les sécheresses
+--- Activer/désactiver les incendies de cultures
+--- Activer/désactiver les flaques d'eau
+--- Modifier le facteur de rendement de la récolte d'humidité
 
 1.1.0.2
 - Correction d'un problème provoquant le gel du jeu avec certains mods
@@ -343,7 +416,11 @@ Journal des modifications :
     <iconFilename>icon_RealisticWeather.dds</iconFilename>
     <multiplayer supported="true"/>
     <extraSourceFiles>
+        <sourceFile filename="src/RealisticWeather.lua"/>
         <sourceFile filename="src/densityMaps/DensityMapHeightManager.lua"/>
+        <sourceFile filename="src/environment/weather/FogSettings.lua"/>
+        <sourceFile filename="src/environment/weather/FogStateEvent.lua"/>
+        <sourceFile filename="src/environment/weather/FogUpdater.lua"/>
         <sourceFile filename="src/environment/weather/Weather.lua"/>
         <sourceFile filename="src/environment/weather/WeatherInstance.lua"/>
         <sourceFile filename="src/environment/weather/WeatherStateEvent.lua"/>
@@ -351,18 +428,15 @@ Journal des modifications :
         <sourceFile filename="src/fillTypes/FillTypeManager.lua"/>
         <sourceFile filename="src/gui/hud/GameInfoDisplay.lua"/>
         <sourceFile filename="src/gui/hud/RW_InfoDisplayKeyValueBox.lua"/>
-        <sourceFile filename="src/gui/InGameMenuSettingsFrame.lua"/>
         <sourceFile filename="src/gui/MoistureArgumentsDialog.lua"/>
         <sourceFile filename="src/gui/RealisticWeatherFrame.lua"/>
         <sourceFile filename="src/missions/field/HarvestMission.lua"/>
         <sourceFile filename="src/missions/field/IrrigationMission.lua"/>
         <sourceFile filename="src/player/PlayerHUDUpdater.lua"/>
         <sourceFile filename="src/player/PlayerInputComponent.lua"/>
+        <sourceFile filename="src/specialization/TypeManager.lua"/>
         <sourceFile filename="src/sounds/AmbientSoundSystem.lua"/>
-        <sourceFile filename="src/vehicles/specializations/Cutter.lua"/>
         <sourceFile filename="src/vehicles/specializations/Drivable.lua"/>
-        <sourceFile filename="src/vehicles/specializations/Mower.lua"/>
-        <sourceFile filename="src/vehicles/specializations/Sprayer.lua"/>
         <sourceFile filename="src/vehicles/specializations/Tedder.lua"/>
         <sourceFile filename="src/vehicles/wheels/WheelPhysics.lua"/>
         <sourceFile filename="src/vehicles/wheels/WheelDestruction.lua"/>
@@ -395,4 +469,9 @@ Journal des modifications :
         <action name="Irrigation"/>
     </actions>
 	<missionVehicles filename="xml/missionVehicles.xml"/>
+	<specializations>
+		<specialization name="extendedCutter" className="ExtendedCutter" filename="src/vehicles/specializations/ExtendedCutter.lua"/>
+		<specialization name="extendedMower" className="ExtendedMower" filename="src/vehicles/specializations/ExtendedMower.lua"/>
+		<specialization name="extendedSprayer" className="ExtendedSprayer" filename="src/vehicles/specializations/ExtendedSprayer.lua"/>
+	</specializations>
 </modDesc>

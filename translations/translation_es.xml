@@ -49,6 +49,7 @@
 		<text name="rw_contract_field_irrigation_targetAverage" text="Humedad promedio objetivo"/>
 
 
+
 		<!--  CONFIGURACIONES  -->
 
 		<text name="rw_settings" text="Clima realista"/>
@@ -114,6 +115,9 @@
 
 		<text name="rw_settings_moistureYieldFactor_label" text="Factor de rendimiento por humedad"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Cambia el rendimiento de cosecha afectado por la humedad"/>
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
 
 	</texts>
 </l10n>

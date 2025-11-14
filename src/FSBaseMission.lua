@@ -96,54 +96,6 @@ RW_FSBaseMission.FRUIT_TYPES_MOISTURE = {
     }
 }
 
-function RW_FSBaseMission:getHarvestScaleMultiplier(superFunc, fruitTypeIndex, sprayLevel, plowLevel, limeLevel, weedsLevel, stubbleLevel, rollerLevel, beeYieldBonusPercentage, moisture)
-
-    local baseYield = superFunc(self, fruitTypeIndex, sprayLevel, plowLevel, limeLevel, weedsLevel, stubbleLevel, rollerLevel, beeYieldBonusPercentage)
-
-    if moisture == nil then return baseYield end
-
-
-    local moistureFactor = 1
-    local fruitType = g_fruitTypeManager:getFruitTypeNameByIndex(fruitTypeIndex)
-    local fruitTypeMoistureFactor = RW_FSBaseMission.FRUIT_TYPES_MOISTURE[fruitType] or RW_FSBaseMission.FRUIT_TYPES_MOISTURE.DEFAULT
-
-    if fruitTypeMoistureFactor ~= nil then
-
-        local lowMoisture = fruitTypeMoistureFactor.LOW
-        local highMoisture = fruitTypeMoistureFactor.HIGH
-        local perfectMoisture = (highMoisture + lowMoisture) / 2
-
-
-        moistureFactor = moisture / perfectMoisture
-
-        if moisture > perfectMoisture then moistureFactor = 2 - moistureFactor end
-
-        moistureFactor = math.clamp(moistureFactor, 0.1, 1)
-
-        if moisture >= lowMoisture and moisture <= highMoisture then moistureFactor = moistureFactor + math.max(1.5 - 2 * (1 - moistureFactor), 0.5) end
-
-        --if moisture >= perfectMoisture - 0.0025 and moisture <= perfectMoisture + 0.0025 then
-          --  moistureFactor = 2.5
-        --elseif moisture < lowMoisture then
-         --   moistureFactor = moisture / lowMoisture
-        --elseif moisture < perfectMoisture then
-         --   moistureFactor = 1 + (moisture / perfectMoisture) * 0.2
-        --elseif moisture > highMoisture then
-        --    moistureFactor = highMoisture / moisture
-        --elseif moisture > perfectMoisture then
-            --moistureFactor = 1 + (perfectMoisture / moisture) * 0.2
-        --end
-
-    end
-
-    --return baseYield * math.clamp(moistureFactor, 0.5, 1.5) * self.moistureYieldFactor
-
-    return math.max(baseYield + (-1 + moistureFactor) * self.moistureYieldFactor, 0)
-
-end
-
-FSBaseMission.getHarvestScaleMultiplier = Utils.overwrittenFunction(FSBaseMission.getHarvestScaleMultiplier, RW_FSBaseMission.getHarvestScaleMultiplier)
-
 
 local function fixInGameMenu(frame, pageName, uvs, position, predicateFunc)
 
@@ -207,9 +159,12 @@ end
 
 function RW_FSBaseMission:onStartMission()
 
+    --g_realisticWeather:executeFunctionChanges()
+
 	RWSettings.applyDefaultSettings()
 
     g_overlayManager:addTextureConfigFile(modDirectory .. "gui/icons.xml", "realistic_weather")
+    g_overlayManager:addTextureConfigFile(modDirectory .. "gui/page_icons.xml", "realistic_weather_pages")
 
     if g_modIsLoaded["FS25_RealisticLivestock"] then RW_Weather.isRealisticLivestockLoaded = true end
     if g_modIsLoaded["FS25_ExtendedGameInfoDisplay"] then RW_GameInfoDisplay.isExtendedGameInfoDisplayLoaded = true end

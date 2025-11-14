@@ -35,8 +35,8 @@ end
 function IrrigationMission:saveToXMLFile(xmlFile, key)
 
 	IrrigationMission:superClass().saveToXMLFile(self, xmlFile, key)
-	xmlFile:setFloat(key .. "#targetMoistureLevel", self.targetMoistureLevel)
-	xmlFile:setFloat(key .. "#averageMoistureLevel", self.averageMoistureLevel)
+	xmlFile:setFloat(key .. "#targetMoistureLevel", self.targetMoistureLevel or 0)
+	xmlFile:setFloat(key .. "#averageMoistureLevel", self.averageMoistureLevel or 0)
 
 end
 

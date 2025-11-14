@@ -31,6 +31,11 @@ function FireSystem.new()
 
         self.isViableForFire = false
 
+        if not g_currentMission.missionDynamicInfo.isMultiplayer then
+            addConsoleCommand("rwSpawnFire", "Spawns a fire at the player's coordinates", "consoleCommandSpawnFire", self)
+            addConsoleCommand("rwEndFire", "Ends the current fire", "consoleCommandEndFire", self)
+        end
+
     end
 
 	return self
@@ -236,7 +241,7 @@ function FireSystem:onHourChanged()
     local season, hour = environment.currentSeason, math.floor(environment:getMinuteOfDay() / 60)
     local temperature = environment.weather.temperatureUpdater:getTemperatureAtTime(environment.dayTime)
 
-    local probability = FireSystem.SEASON_TO_PROBABILITY[season] * (currentWeather.isDraught and 0.45 or 0.05)
+    local probability = FireSystem.SEASON_TO_PROBABILITY[season] * (currentWeather ~= nil and currentWeather.isDraught and 0.45 or 0.05)
 
     if hour < 6 or hour > 18 then probability = probability * 0.08 end
 
@@ -280,5 +285,47 @@ function FireSystem:onDayChanged()
     local probability = FireSystem.SEASON_TO_PROBABILITY[season]
 
     self.isViableForFire = math.random() < probability
+
+end
+
+
+function FireSystem:consoleCommandSpawnFire()
+
+    if not self.isServer then return "Failed to spawn fire: fire can only be spawned server-side" end
+
+    if not self.fireEnabled then return "Failed to spawn fire: fires are disabled" end
+
+    if self.fieldId ~= nil then return "Failed to spawn fire: a fire already exists" end
+
+    local player = g_localPlayer
+
+    if player == nil then return "Failed to spawn fire: local player does not exist" end
+
+    local fieldId = FieldManager.getFieldIdAtPlayerPosition()
+    local x, _, z = player:getPosition()
+
+    local groundTypeValue = g_currentMission.fieldGroundSystem:getValueAtWorldPos(FieldDensityMap.GROUND_TYPE, x, 0, z)
+    local groundType = FieldGroundType.getTypeByValue(groundTypeValue)
+
+	if groundType == FieldGroundType.CULTIVATED then return "Failed to spawn fire: player is on a cultivated field" end
+    
+    if groundType == FieldGroundType.NONE then return "Failed to spawn fire: player must be on a field" end
+
+    self:startFire(x, z, fieldId)
+
+    local moistureSystem = g_currentMission.moistureSystem
+
+    return string.format("Successfully spawned fire: %.2fx (%.0fx), %.2fz (%.2fz), field #%s", x, moistureSystem.mapWidth / 2 + x, z, moistureSystem.mapHeight / 2 + z, fieldId)
+
+end
+
+
+function FireSystem:consoleCommandEndFire()
+
+    if self.fieldId == nil then return "Failed to end fire: no fire exists" end
+
+    self:endFire()
+
+    return "Successfully ended fire"
 
 end

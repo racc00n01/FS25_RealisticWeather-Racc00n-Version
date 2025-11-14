@@ -1,4 +1,5 @@
 RealisticWeatherFrame = {}
+RealisticWeatherFrame.ITEMS_PER_PAGE = 250
 
 local realisticWeatherFrame_mt = Class(RealisticWeatherFrame, TabbedMenuFrameElement)
 
@@ -184,10 +185,7 @@ end
 function RealisticWeatherFrame:onClickFieldList(index)
 
 	self.selectedField = index
-
-	self:resetButtonStates()
-	self:updateMenuButtons()
-	self.moistureList:reloadData()
+	self:createPages()
 
 end
 
@@ -234,11 +232,6 @@ function RealisticWeatherFrame:updateFieldInfo()
 		end
 
 		if self.showAll then
-
-			-- extremely large lists are obviously not healthy for the game interface and can cause crashes or massive lag just by being displayed
-			-- i could just limit it at 1500, ie, show 1500 even if there are 3000, but then that may be confusing for players
-
-			if #data >= 1500 then data = {} end
 
 			table.insert(fieldData, data)
 
@@ -328,34 +321,69 @@ function RealisticWeatherFrame:updateFieldInfo()
 	self.irrigationActiveButton:setVisible(not self.showAll)
 	self.irrigationCostButton:setVisible(not self.showAll)
 
-	self.moistureList:reloadData()
-	self:updateMenuButtons()
+	self:createPages()
+
+end
+
+
+function RealisticWeatherFrame:createPages()
+
+	local data = self.showAll and self.fieldData[self.selectedField] or (self.selectedField == 1 and self.ownedFieldData or self.allFieldData)
+	self.pages = { {} }
+	local page = self.pages[1]
+
+	for _, item in pairs(data) do
+
+		if #page >= RealisticWeatherFrame.ITEMS_PER_PAGE then
+			table.insert(self.pages, {})
+			page = self.pages[#self.pages]
+		end
+
+		table.insert(page, item)
+
+	end
+
+	self.currentPage = 1
+	self.lastPage = 0
+
+	self:onChangePage()
 
 end
 
 
 function RealisticWeatherFrame:getNumberOfSections()
-	if (self.showAll and self.fieldData[self.selectedField] == nil) or (not self.showAll and ((self.selectedField == 1 and self.ownedFieldData == nil) or (self.selectedField == 2 and self.allFieldData == nil))) then return 0 end
+	--if (self.showAll and self.fieldData[self.selectedField] == nil) or (not self.showAll and ((self.selectedField == 1 and self.ownedFieldData == nil) or (self.selectedField == 2 and self.allFieldData == nil))) then return 0 end
+
+	if #self.pages == 0 or #self.pages[self.currentPage] == 0 then return 0 end
 
 	return 1
 end
 
 
 function RealisticWeatherFrame:getNumberOfItemsInSection(list, section)
-		if (self.showAll and self.fieldData[self.selectedField] == nil) or (not self.showAll and ((self.selectedField == 1 and self.ownedFieldData == nil) or (self.selectedField == 2 and self.allFieldData == nil))) then return 0 end
 
-        return self.showAll and #self.fieldData[self.selectedField] or (self.selectedField == 1 and #self.ownedFieldData or #self.allFieldData)
+	--if (self.showAll and self.fieldData[self.selectedField] == nil) or (not self.showAll and ((self.selectedField == 1 and self.ownedFieldData == nil) or (self.selectedField == 2 and self.allFieldData == nil))) then return 0 end
+
+	if #self.pages == 0 or #self.pages[self.currentPage] == 0 then return 0 end
+
+	--return self.showAll and #self.fieldData[self.selectedField] or (self.selectedField == 1 and #self.ownedFieldData or #self.allFieldData)
+
+	return #self.pages[self.currentPage]
+
 end
 
 
 function RealisticWeatherFrame:getTitleForSectionHeader(list, section)
+
     return ""
+
 end
 
 
 function RealisticWeatherFrame:populateCellForItemInSection(list, section, index, cell)
 
-	local data = self.showAll and self.fieldData[self.selectedField] or (self.selectedField == 1 and self.ownedFieldData or self.allFieldData)
+	--local data = self.showAll and self.fieldData[self.selectedField] or (self.selectedField == 1 and self.ownedFieldData or self.allFieldData)
+	local data = self.pages[self.currentPage]
 	local item = data[index]
 
 	local trend = (item.moisture - item.trend) * 100
@@ -430,7 +458,7 @@ function RealisticWeatherFrame:onClickSortButton(button)
 
 	if not self.showAll and (target == "irrigationActive" or target == "irrigationCost") then
 		
-		local data = self.selectedField == 1 and self.ownedFieldData or self.allFieldData
+		local data = self.pages[self.currentPage]
 		local moistureSystem = g_currentMission.moistureSystem
 		
 		for _, item in pairs(data) do
@@ -441,7 +469,7 @@ function RealisticWeatherFrame:onClickSortButton(button)
 
 	end
 
-	table.sort(self.showAll and self.fieldData[self.selectedField] or (self.selectedField == 1 and self.ownedFieldData or self.allFieldData), function(a, b)
+	table.sort(self.pages[self.currentPage], function(a, b)
 		if sorter then return a[target] > b[target] end
 
 		return a[target] < b[target]
@@ -475,17 +503,7 @@ function RealisticWeatherFrame:onClickTeleport()
 
 	if g_localPlayer == nil then return end
 
-	local item
-
-	if self.showAll and self.fieldData ~= nil and self.fieldData[self.selectedField] ~= nil and self.moistureList.selectedIndex ~= 0 then
-		item = self.fieldData[self.selectedField][self.moistureList.selectedIndex]
-	elseif not self.showAll and self.moistureList.selectedIndex ~= 0 then
-		if self.selectedField == 1 then
-			item = self.ownedFieldData[self.moistureList.selectedIndex]
-		else
-			item = self.allFieldData[self.moistureList.selectedIndex]
-		end
-	end
+	local item = self.pages[self.currentPage][self.moistureList.selectedIndex]
 
 	if item == nil then return end
 
@@ -500,8 +518,7 @@ function RealisticWeatherFrame:onClickListItem(item)
 
 	self.selectedFieldId = nil
 
-	local data = self.selectedField == 1 and self.ownedFieldData or self.allFieldData
-
+	local data = self.pages[self.currentPage]
 	local index = item.indexInSection
 
 	if data == nil or data[index] == nil or g_localPlayer == nil then
@@ -519,5 +536,55 @@ function RealisticWeatherFrame:onClickListItem(item)
 	end
 
 	self:updateMenuButtons()
+
+end
+
+
+function RealisticWeatherFrame:onChangePage()
+
+	if self.lastPage == self.currentPage then return end
+
+	self.lastPage = self.currentPage
+
+	local totalNumCells = (#self.pages - 1) * RealisticWeatherFrame.ITEMS_PER_PAGE + #self.pages[#self.pages]
+
+	self.pageNumber:setText(string.format("%s/%s", self.currentPage, #self.pages))
+	self.cellNumber:setText(string.format(g_i18n:getText("rw_ui_messageNumber"), (#self.pages[self.currentPage] == 0 and 0 or 1) + RealisticWeatherFrame.ITEMS_PER_PAGE * (self.currentPage - 1), (self.currentPage - 1) * RealisticWeatherFrame.ITEMS_PER_PAGE + #self.pages[self.currentPage], totalNumCells))
+
+	self.moistureList:reloadData()
+	self:resetButtonStates()
+	self:updateMenuButtons()
+
+end
+
+
+function RealisticWeatherFrame:onClickPageFirst()
+
+    self.currentPage = 1
+    self:onChangePage()
+
+end
+
+
+function RealisticWeatherFrame:onClickPagePrevious()
+
+    self.currentPage = math.max(self.currentPage - 1, 1)
+    self:onChangePage()
+
+end
+
+
+function RealisticWeatherFrame:onClickPageNext()
+
+    self.currentPage = math.min(self.currentPage + 1, #self.pages)
+    self:onChangePage()
+
+end
+
+
+function RealisticWeatherFrame:onClickPageLast()
+
+    self.currentPage = #self.pages
+    self:onChangePage()
 
 end

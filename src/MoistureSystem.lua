@@ -1,6 +1,6 @@
 MoistureSystem = {}
 
-MoistureSystem.VERSION = "1.1.2.6"
+MoistureSystem.VERSION = "1.2.1.0"
 
 table.insert(FinanceStats.statNames, "irrigationUpkeep")
 FinanceStats.statNameToIndex["irrigationUpkeep"] = #FinanceStats.statNames
@@ -23,9 +23,18 @@ MoistureSystem.CELL_HEIGHT = {
     [6] = 4
 }
 
+MoistureSystem.DEFAULT_PERFORMANCE_INDEXES = {
+    [GS_PROFILE_ULTRA] = 2,
+    [GS_PROFILE_VERY_HIGH] = 3,
+    [GS_PROFILE_HIGH] = 4,
+    [GS_PROFILE_MEDIUM] = 5,
+    [GS_PROFILE_LOW] = 8,
+    [GS_PROFILE_VERY_LOW] = 10
+}
+
 MoistureSystem.MAP_WIDTH = 2048
 MoistureSystem.MAP_HEIGHT = 2048
-MoistureSystem.TICKS_PER_UPDATE = 40
+MoistureSystem.TICKS_PER_UPDATE = 60
 MoistureSystem.IRRIGATION_FACTOR = 0.0000008
 
 MoistureSystem.SPRAY_FACTOR = {
@@ -40,6 +49,12 @@ local moistureSystem_mt = Class(MoistureSystem)
 function MoistureSystem.new()
 
     local self = setmetatable({}, moistureSystem_mt)
+
+    g_optimisationTest:registerTest("Moisture Update Queue")
+    g_optimisationTest:registerTest("Moisture Update")
+    g_optimisationTest:registerTest("Moisture Calc 1")
+    g_optimisationTest:registerTest("Moisture Calc 2")
+    g_optimisationTest:registerTest("Moisture Calc 3")
 
     self.mission = g_currentMission
     self.rows = {}
@@ -63,7 +78,7 @@ function MoistureSystem.new()
 
     self.witheringEnabled = true
     self.witheringChance = 1
-    self.performanceIndex = 2
+    self.performanceIndex = 4
     self.moistureGainModifier = 1
     self.moistureLossModifier = 1
     self.moistureOverlayBehaviour = 3
@@ -85,6 +100,8 @@ function MoistureSystem.new()
             ["pendingSync"] = { ["numRows"] = 0 }
         }
     }
+
+    self.updateQueue = {}
 
     MoneyType.IRRIGATION_UPKEEP = MoneyType.register("irrigationUpkeep", "rw_ui_irrigationUpkeep")
     MoneyType.LAST_ID = MoneyType.LAST_ID + 1
@@ -250,6 +267,8 @@ function MoistureSystem:generateNewMapMoisture(xmlFile, force)
 
     print(string.format("--- RealisticWeather (%s) ---", MoistureSystem.VERSION), "--- Generating map moisture cell system")
 
+    self.updateQueue = {}
+
     if not force then
 
         if xmlFile == nil then return end
@@ -258,6 +277,7 @@ function MoistureSystem:generateNewMapMoisture(xmlFile, force)
 
         if g_server ~= nil and g_server.netIsRunning and performanceIndex <= 3 then
             performanceIndex = 4
+            self.performanceIndex = 4
             print("--- Generating on server mode")
         end
 
@@ -390,6 +410,7 @@ function MoistureSystem:generateNewMapMoisture(xmlFile, force)
 
 end
 
+
 ---Get target values at coordinates
 -- @param float x x coordinate
 -- @param float z z coordinate
@@ -418,17 +439,15 @@ function MoistureSystem:getValuesAtCoords(x, z, values)
         for _, value in pairs(values) do
 
             returnValues[value] = value == "retention" and column[value] or math.clamp(column[value] or 0, 0, 1)
+
             if value == "moisture" then
                     
                 local delta = self:getUpdaterAtX(row.x).moistureDelta
-
                 local safeZoneFactor = 1
 
                 if column.moisture < 0.06 and delta < 0 then
                     safeZoneFactor = (2 - column.retention) * column.moisture * 20
-                end
-
-                if column.moisture > 0.275 and delta > 0 then
+                elseif column.moisture > 0.275 and delta > 0 then
                     safeZoneFactor = (column.retention / column.moisture) * 0.05
                 end
 
@@ -437,9 +456,11 @@ function MoistureSystem:getValuesAtCoords(x, z, values)
                 else
                     returnValues[value] = returnValues[value] + delta * (2 - column.retention) * safeZoneFactor
                 end
+
             end
 
             if not self.witheringEnabled and value == "witherChance" then returnValues[value] = 0 end
+
         end
 
         return returnValues
@@ -512,7 +533,9 @@ end
 
 function MoistureSystem:update(delta, timescale)
 
-    --local testSeconds1 = getTimeSec()
+    if self.isSaving then return end
+
+    --g_optimisationTest:startTest("Moisture Update")
 
     for _, updateIteration in pairs(self.updateIterations) do
         updateIteration.moistureDelta = updateIteration.moistureDelta + delta
@@ -522,11 +545,9 @@ function MoistureSystem:update(delta, timescale)
     local puddleSystem = g_currentMission.puddleSystem
     local fireSystem = g_currentMission.fireSystem
 
-    if self.ticksSinceLastUpdate >= MoistureSystem.TICKS_PER_UPDATE and not self.isSaving then
+    if self.ticksSinceLastUpdate >= MoistureSystem.TICKS_PER_UPDATE then
 
-        local canCreatePuddle = puddleSystem:getCanCreatePuddle()
         local isIrrigatingFields = false
-        local fieldGroundSystem = g_currentMission.fieldGroundSystem
 
         for _, field in pairs(self.irrigatingFields) do
             if field.isActive then
@@ -546,7 +567,6 @@ function MoistureSystem:update(delta, timescale)
         local updater = self.updateIterations[self.currentUpdateIteration]
         local moistureDelta = updater.moistureDelta
         local timeSinceLastUpdate = updater.timeSinceLastUpdate
-        local cacheUpdatePending = updater.cacheUpdatePending
 
         x = math.round(x)
 
@@ -556,6 +576,8 @@ function MoistureSystem:update(delta, timescale)
                 break
             end
         end
+
+        local updateQueue = {}
 
         if self.rows[x] ~= nil then
 
@@ -571,94 +593,7 @@ function MoistureSystem:update(delta, timescale)
                     continue
                 end
 
-                for z, column in pairs(row.columns) do
-
-                    if cacheUpdatePending then
-
-                        local groundTypeValue = fieldGroundSystem:getValueAtWorldPos(FieldDensityMap.GROUND_TYPE, x, 0, z)
-                        local fruitTypeIndex, growthState
-                        
-                        column.fieldId = g_farmlandManager:getFarmlandIdAtWorldPosition(x, z)
-                        column.groundType = FieldGroundType.getTypeByValue(groundTypeValue)
-                        
-                        --if column.groundType ~= FieldGroundType.NONE then fruitTypeIndex, growthState = FSDensityMapUtil.getFruitTypeIndexAtWorldPos(x, z) end
-
-                        --column.fruitTypeIndex = fruitTypeIndex
-                        --column.growthState = growthState
-
-                    end
-
-                    local irrigationFactor = 0
-
-                    if isIrrigatingFields then
-
-                        local fieldId = column.fieldId
-
-                        if fieldId ~= nil and self.irrigatingFields[fieldId] ~= nil and self.irrigatingFields[fieldId].isActive then
-
-                            irrigationFactor = MoistureSystem.IRRIGATION_FACTOR * timeSinceLastUpdate * self.moistureGainModifier
-                            self.irrigatingFields[fieldId].pendingCost = self.irrigatingFields[fieldId].pendingCost + self.cellWidth * self.cellHeight * timeSinceLastUpdate * MoistureSystem.IRRIGATION_BASE_COST
-
-                        end
-
-                    end
-
-
-                    -- "safeZoneFactor" to reduce the chances of moisture going to extreme highs/lows based on retention
-
-                    local safeZoneFactor = 1
-
-                    if column.moisture < 0.06 and moistureDelta < 0 then
-                        safeZoneFactor = (2 - column.retention) * column.moisture * 20
-                    end
-
-                    if column.moisture > 0.275 and moistureDelta > 0 then
-                        safeZoneFactor = (column.retention / column.moisture) * 0.05
-                    end
-
-                    if moistureDelta >= 0 then
-                        column.moisture = column.moisture + irrigationFactor * column.retention + moistureDelta * column.retention * safeZoneFactor
-                    else
-                        column.moisture = column.moisture + irrigationFactor * column.retention + moistureDelta * (2 - column.retention) * safeZoneFactor
-                    end
-
-
-                    if column.moisture >= 0.3 and canCreatePuddle then
-                        
-                        local groundType = column.groundType
-
-                        if groundType ~= nil and groundType ~= FieldGroundType.NONE then
-
-                            local closestPuddle = puddleSystem:getClosestPuddleToPoint(x, z)
-
-                            if closestPuddle.puddle == nil or closestPuddle.distance > 100 then
-
-                                canCreatePuddle = false
-
-                                local terrainHeight = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
-
-                                local variation = puddleSystem:getRandomVariation()
-
-                                local puddle = Puddle.new(variation.id, terrainHeight)
-
-                                puddleSystem:addPuddle(puddle)
-
-                                puddle:setMoisture(column.moisture)
-                                puddle:setPosition(x, terrainHeight + math.clamp((column.moisture - 0.3) * 0.25, 0, 0.2), z)
-                                puddle:setScale(column.moisture - 0.3, column.moisture - 0.3)
-                                puddle:setRotation(0, math.random(-180, 180) * 0.01, 0)
-                                puddle:initialize()
-
-                                NewPuddleEvent.sendEvent(puddle)
-
-                            end
-
-                        end
-
-                    end
-
-
-                end
+                for z, column in pairs(row.columns) do table.insert(updateQueue, { ["x"] = x, ["z"] = z }) end
 
                 i = i + 1
                 x = x + self.cellWidth
@@ -667,7 +602,13 @@ function MoistureSystem:update(delta, timescale)
 
         end
 
-        self.lastMoistureDelta = self.updateIterations[self.currentUpdateIteration].moistureDelta * 1
+        self.updateQueue.queue = updateQueue
+        self.updateQueue.count = #updateQueue
+        self.updateQueue.cacheUpdatePending = updater.cacheUpdatePending
+        self.updateQueue.isIrrigatingFields = isIrrigatingFields
+
+        self.lastMoistureDelta = self.updateIterations[self.currentUpdateIteration].moistureDelta
+        self.lastTimeSinceLastUpdate = self.updateIterations[self.currentUpdateIteration].timeSinceLastUpdate
 
         self.updateIterations[self.currentUpdateIteration].moistureDelta = 0
         self.updateIterations[self.currentUpdateIteration].timeSinceLastUpdate = 0
@@ -708,31 +649,133 @@ function MoistureSystem:update(delta, timescale)
 
     self.ticksSinceLastUpdate = self.ticksSinceLastUpdate + 1
 
+    --g_optimisationTest:startTest("Moisture Update Queue")
+
+    self:processUpdateQueue()
+    
+    --g_optimisationTest:endTest("Moisture Update Queue")
+    --g_optimisationTest:endTest("Moisture Update")
+
+    --g_optimisationTest:update()
+
+end
 
 
+function MoistureSystem:processUpdateQueue()
+
+    local queue = self.updateQueue.queue
+
+    if queue == nil or #queue == 0 then return end
+
+    local numToProcess = self.updateQueue.count / MoistureSystem.TICKS_PER_UPDATE
+
+    if numToProcess > #queue then numToProcess = #queue end
+
+    local cacheUpdatePending, isIrrigatingFields = self.updateQueue.cacheUpdatePending, self.updateQueue.isIrrigatingFields
+    local fieldGroundSystem = g_currentMission.fieldGroundSystem
+    local puddleSystem = g_currentMission.puddleSystem
+    local canCreatePuddle = puddleSystem:getCanCreatePuddle()
+    local moistureDelta, timeSinceLastUpdate = self.lastMoistureDelta, self.lastTimeSinceLastUpdate
+
+    local row, lastX
+
+    for i = 1, numToProcess do
+
+        local x, z = queue[1].x, queue[1].z
+
+        table.remove(queue, 1)
+
+        if lastX ~= x then
+            row = self.rows[x]
+            lastX = x
+        end
+
+        local column = row.columns[z]
+
+        if column == nil then continue end
+
+        if cacheUpdatePending then
+
+            local groundTypeValue = fieldGroundSystem:getValueAtWorldPos(FieldDensityMap.GROUND_TYPE, x, 0, z)
+            local fruitTypeIndex, growthState
+                        
+            column.fieldId = g_farmlandManager:getFarmlandIdAtWorldPosition(x, z)
+            column.groundType = FieldGroundType.getTypeByValue(groundTypeValue)
+
+        end
+
+        local irrigationFactor = 0
+
+        if isIrrigatingFields then
+
+            local fieldId = column.fieldId
+
+            if fieldId ~= nil and self.irrigatingFields[fieldId] ~= nil and self.irrigatingFields[fieldId].isActive then
+
+                irrigationFactor = MoistureSystem.IRRIGATION_FACTOR * timeSinceLastUpdate * self.moistureGainModifier
+                self.irrigatingFields[fieldId].pendingCost = self.irrigatingFields[fieldId].pendingCost + self.cellWidth * self.cellHeight * timeSinceLastUpdate * MoistureSystem.IRRIGATION_BASE_COST
+
+            end
+
+        end
 
 
-    -- #################################################################################################
+        -- "safeZoneFactor" to reduce the chances of moisture going to extreme highs/lows based on retention
 
-    -- for testing purposes, to get the average processing time
+        local safeZoneFactor = 1
+        
+        --g_optimisationTest:startTest("Moisture Calc 1")
 
+        if column.moisture < 0.06 and moistureDelta < 0 then
+            safeZoneFactor = (2 - column.retention) * column.moisture * 20
+        elseif column.moisture > 0.275 and moistureDelta > 0 then
+            safeZoneFactor = (column.retention / column.moisture) * 0.05
+        end
 
-    --local testSeconds2 = getTimeSec()
+        --g_optimisationTest:endTest("Moisture Calc 2")
+        --g_optimisationTest:startTest("Moisture Calc 3")
 
-    --self.averageTestSeconds = self.averageTestSeconds or {}
-    --table.insert(self.averageTestSeconds, testSeconds2 - testSeconds1)
+        if moistureDelta >= 0 then
+            column.moisture = column.moisture + irrigationFactor * column.retention + moistureDelta * column.retention * safeZoneFactor
+        else
+            column.moisture = column.moisture + irrigationFactor * column.retention + moistureDelta * (2 - column.retention) * safeZoneFactor
+        end
 
-    --if #self.averageTestSeconds == 250 then
+        --g_optimisationTest:endTest("Moisture Calc 1")
 
-        --local averageSeconds = 0
+        if canCreatePuddle and column.moisture >= 0.3 then
+                        
+            local groundType = column.groundType
 
-        --for _, a in pairs(self.averageTestSeconds) do averageSeconds = averageSeconds + a end
+            if groundType ~= nil and groundType ~= FieldGroundType.NONE then
 
-        --print((averageSeconds / 250) * 1000)
+                local closestPuddle = puddleSystem:getClosestPuddleToPoint(x, z)
 
-        --self.averageTestSeconds = {}
+                if closestPuddle.puddle == nil or closestPuddle.distance > 100 then
 
-    --end
+                    canCreatePuddle = false
+
+                    local terrainHeight = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
+                    local variation = puddleSystem:getRandomVariation()
+                    local puddle = Puddle.new(variation.id, terrainHeight)
+
+                    puddleSystem:addPuddle(puddle)
+
+                    puddle:setMoisture(column.moisture)
+                    puddle:setPosition(x, terrainHeight + math.clamp((column.moisture - 0.3) * 0.25, 0, 0.2), z)
+                    puddle:setScale(column.moisture - 0.3, column.moisture - 0.3)
+                    puddle:setRotation(0, math.random(-180, 180) * 0.01, 0)
+                    puddle:initialize()
+
+                    NewPuddleEvent.sendEvent(puddle)
+
+                end
+
+            end
+
+        end
+
+    end
 
 end
 
@@ -1101,6 +1144,10 @@ function MoistureSystem.onSettingChanged(name, state)
 
         end
 
+        local default = MoistureSystem.DEFAULT_PERFORMANCE_INDEXES[Utils.getPerformanceClassId()]
+
+        print("RealisticWeather:", string.format("\\___ Default PI: %s", default), string.format("\\___ Current PI: %s", state))
+
     end
 
 end
@@ -1163,5 +1210,12 @@ function MoistureSystem:applyResetFromSync(rows, numRows, numColumns, cellWidth,
     self.currentUpdateIteration = 1
 
     for _, irrigatingField in pairs(self.irrigatingFields) do irrigatingField.isActive = false end
+
+end
+
+
+function MoistureSystem.getDefaultPerformanceIndex()
+
+    return MoistureSystem.DEFAULT_PERFORMANCE_INDEXES[Utils.getPerformanceClassId()]
 
 end

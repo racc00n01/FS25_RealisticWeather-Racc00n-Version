@@ -53,7 +53,7 @@
 		<!--  SETTINGS  -->
 
 
-		<text name="rw_settings" text="Realistic Weather"/>
+		<text name="rw_settings" text="Realistisches Wetter"/>
 
 		<text name="rw_settings_off" text="Aus"/>
 		<text name="rw_settings_on" text="An"/>
@@ -61,12 +61,12 @@
 		<text name="rw_settings_witheringEnabled_label" text="Welken der Pflanzen"/>
 		<text name="rw_settings_witheringEnabled_tooltip_1" text="Pflanzen welken nicht bei niedriger Feuchtigkeit"/>
 		<text name="rw_settings_witheringEnabled_tooltip_2" text="Pflanzen werden bei geringer Feuchtigkeit welken"/>
-
+		
 		<text name="rw_settings_rebuildMoistureMap_label" text="Feuchtigkeitskarte neu erstellen"/>
 		<text name="rw_settings_rebuildMoistureMap_tooltip" text="Feuchtigkeitskarte löschen und mit benutzerdefinierten Argumenten neu generieren"/>
 		<text name="rw_settings_rebuildMoistureMap_text" text="Feuchtigkeitskarte neu erstellen"/>
 
-		<text name="rw_settings_performanceIndex_label" text="Performance Index"/>
+		<text name="rw_settings_performanceIndex_label" text="Leistungsindex"/>
 		<text name="rw_settings_performanceIndex_tooltip" text="Erhöhe diesen Wert, um die Performance zu verbessern"/>
 
 		<text name="rw_settings_witheringChance_label" text="Welkwahrscheinlichkeit"/>
@@ -74,10 +74,10 @@
 
 		<text name="rw_settings_moistureGainModifier_label" text="Feuchtigkeitszuwachs Modifikator"/>
 		<text name="rw_settings_moistureGainModifier_tooltip" text="Ändere die Menge an gewonnenem Wasser"/>
-
+		
 		<text name="rw_settings_moistureLossModifier_label" text="Feuchtigkeitsverlust Modifikator"/>
 		<text name="rw_settings_moistureLossModifier_tooltip" text="Ändere die Menge des verlorenen Wassers"/>
-
+		
 		<text name="rw_settings_moistureOverlayBehaviour_label" text="Feuchtigkeitsanzeige"/>
 		<text name="rw_settings_moistureOverlayBehaviour_tooltip_1" text="Die Feuchtigkeitsanzeige wird nie angezeigt"/>
 		<text name="rw_settings_moistureOverlayBehaviour_tooltip_2" text="Die Feuchtigkeitsanzeige wird nur auf dem Feld angezeigt"/>
@@ -85,7 +85,7 @@
 		<text name="rw_settings_moistureOverlayBehaviour_texts_1" text="Aus"/>
 		<text name="rw_settings_moistureOverlayBehaviour_texts_2" text="Limitiert"/>
 		<text name="rw_settings_moistureOverlayBehaviour_texts_3" text="An"/>
-
+		
 		<text name="rw_settings_moistureFrameBehaviour_label" text="Feuchtigkeits-Tab"/>
 		<text name="rw_settings_moistureFrameBehaviour_tooltip_1" text="Das Feuchtigkeits-Tab im Hauptmenü zeigt alle Zellen im ausgewählten Feld an"/>
 		<text name="rw_settings_moistureFrameBehaviour_tooltip_2" text="Das Feuchtigkeits-Tab im Hauptmenü zeigt die Durchschnittswerte jedes Feldes an (besser für die Leistung)"/>
@@ -116,6 +116,9 @@
 
 		<text name="rw_settings_moistureYieldFactor_label" text="Feuchtigkeitsertragsfaktor"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Ändere den Ernteertrag, der durch Feuchtigkeit hinzugefügt wird"/>
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
 
 	</texts>
 </l10n>

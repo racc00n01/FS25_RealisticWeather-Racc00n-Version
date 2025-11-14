@@ -117,5 +117,8 @@
 		<text name="rw_settings_moistureYieldFactor_label" text="Moisture Yield Factor"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Change the harvest yield added by moisture"/>
 
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
+
 	</texts>
 </l10n>

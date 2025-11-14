@@ -1,5 +1,6 @@
 RW_FieldState = {}
 
+
 function RW_FieldState:update(x, z)
 
     local moistureSystem = g_currentMission.moistureSystem
@@ -25,14 +26,15 @@ end
 
 FieldState.update = Utils.appendedFunction(FieldState.update, RW_FieldState.update)
 
-function RW_FieldState:getHarvestScaleMultiplier(superFunc)
 
-    if self.moisture == nil then return superFunc(self) end
+g_realisticWeather:registerFunction(FieldState, "getHarvestScaleMultiplier", function(self, superFunc)
 
-    local sprayLevel, plowLevel, limeLevel, weedsLevel, stubbleLevel, rollerLevel = self:getHarvestScaleFactors()
+    g_realisticWeather.fieldMoisture = self.moisture
 
-    return g_currentMission:getHarvestScaleMultiplier(self.fruitTypeIndex, sprayLevel, plowLevel, limeLevel, weedsLevel, stubbleLevel, rollerLevel, 0, self.moisture)
+    local yield = superFunc(self)
 
-end
+    g_realisticWeather.fieldMoisture = nil
 
-FieldState.getHarvestScaleMultiplier = Utils.overwrittenFunction(FieldState.getHarvestScaleMultiplier, RW_FieldState.getHarvestScaleMultiplier)
+    return yield
+
+end)

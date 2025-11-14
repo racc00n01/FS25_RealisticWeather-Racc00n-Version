@@ -392,6 +392,8 @@ Weather.fillWeatherForecast = Utils.overwrittenFunction(Weather.fillWeatherForec
 
 
 function RW_Weather:randomizeFog(_, time)
+    
+    if not g_currentMission:getIsServer() then return end
 
     local season = self.owner.currentSeason
     local seasonToFog = self.seasonToFog[season]
@@ -438,6 +440,7 @@ function RW_Weather:sendInitialState(_, connection)
 
     connection:sendEvent(WeatherStateEvent.new(self.snowHeight, self.timeSinceLastRain, moistureSystem.cellWidth, moistureSystem.cellHeight, moistureSystem.mapWidth, moistureSystem.mapHeight, moistureSystem.currentHourlyUpdateQuarter, moistureSystem.numRows, moistureSystem.numColumns, moistureSystem.rows, moistureSystem.irrigatingFields, self.lastFogDay))
     connection:sendEvent(WeatherAddObjectEvent.new(self.forecastItems, true, true))
+    connection:sendEvent(FogStateEvent.new(self.fogUpdater))
 
 end
 

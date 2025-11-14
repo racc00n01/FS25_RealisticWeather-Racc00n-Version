@@ -38,9 +38,9 @@ RWSettings.SETTINGS = {
 	["performanceIndex"] = {
 		["index"] = 4,
 		["type"] = "MultiTextOption",
-		["default"] = 2,
+		["default"] = MoistureSystem.getDefaultPerformanceIndex(),
 		["valueType"] = "int",
-		["values"] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+		["values"] = { 2, 3, 4, 5, 6, 7, 8, 9, 10 },
 		["callback"] = MoistureSystem.onSettingChanged
 	},
 

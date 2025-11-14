@@ -116,6 +116,9 @@
 
 		<text name="rw_settings_moistureYieldFactor_label" text="Faktor výnosu vlhkosti"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Změna výnosu sklizně přidaná podle vlhkosti"/>
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
 		
 	</texts>
 </l10n>

@@ -103,6 +103,7 @@ function RW_GameInfoDisplay:draw()
     if self.updateTicks >= RW_GameInfoDisplay.TICKS_PER_UPDATE then
         self.updateTicks = 0
         local environment = g_currentMission.environment
+
         local _, currentWeather = environment.weather.forecast:dataForTime(environment.currentMonotonicDay, environment.dayTime)
 
         if currentWeather ~= nil then
@@ -117,10 +118,12 @@ function RW_GameInfoDisplay:draw()
 
             local currentWeatherEndDay = currentWeather.startDay
             local currentWeatherEndTime = currentWeather.startDayTime + currentWeather.duration
+
             if currentWeather.startDayTime + currentWeather.duration >= 86400000 then
                 currentWeatherEndDay = currentWeatherEndDay + 1
                 currentWeatherEndTime = (currentWeather.startDayTime + currentWeather.duration) - 86400000
             end
+
             local _, nextWeather = environment.weather.forecast:dataForTime(currentWeatherEndDay, currentWeatherEndTime + 1)
 
             if nextWeather ~= nil then
@@ -187,13 +190,14 @@ function RW_GameInfoDisplay:draw()
 
                     local variation = environment.weather:getForecastInstanceVariation(nextWeather)
 
-                    local minutesEnd = ((((nextWeatherEndDay - environment.currentDay) * 60000) + nextWeatherEndTime) / 1000) / 60
-                    local minutesStart = ((((nextWeather.startDay - environment.currentDay) * 60000) + nextWeather.startDayTime) / 1000) / 60
+                    local minutesEnd = ((((nextWeatherEndDay - environment.currentMonotonicDay) * 60000) + nextWeatherEndTime) / 1000) / 60
+                    local minutesStart = ((((nextWeather.startDay - environment.currentMonotonicDay) * 60000) + nextWeather.startDayTime) / 1000) / 60
                     local minutesMid = (minutesEnd + minutesStart) / 2
 
                     local endForecast = environment.weather.forecast:getHourlyForecast(math.floor(minutesEnd / 60))
                     local startForecast = environment.weather.forecast:getHourlyForecast(math.floor(minutesStart / 60))
                     local midForecast = environment.weather.forecast:getHourlyForecast(math.floor(minutesMid / 60))
+
 
                     if startForecast ~= nil and endForecast ~= nil and midForecast ~= nil then
 
@@ -207,13 +211,15 @@ function RW_GameInfoDisplay:draw()
                 end
 
                 local snowForecast = nextWeather.snowForecast
-                if snowForecast == nil then continue end
+                if snowForecast == nil then break end
 
                 snowHeight = math.clamp(snowHeight + snowForecast, 0, RW_Weather.FACTOR.SNOW_HEIGHT)
+
 
                 _, nextWeather = environment.weather.forecast:dataForTime(nextWeatherEndDay, nextWeatherEndTime + 1)
 
             end
+
 
             self.snowHeightMin = math.clamp(self.setSnow + snowHeight * 0.985, 0, RW_Weather.FACTOR.SNOW_HEIGHT)
             self.snowHeightMax = math.clamp(self.setSnow + snowHeight * 1.015, 0, RW_Weather.FACTOR.SNOW_HEIGHT)
@@ -450,6 +456,7 @@ function RW_GameInfoDisplay:draw()
 
     setTextBold(false)
     if elementLoaded then self.temperatureBgLeft:render() end
+
 end
 
 GameInfoDisplay.draw = Utils.appendedFunction(GameInfoDisplay.draw, RW_GameInfoDisplay.draw)

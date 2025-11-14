@@ -41,6 +41,11 @@ end
 
 function GrassMoistureSystem:update(delta)
 
+    if #self.areaToGrass == 0 then
+        self.moistureDelta = 0
+        return
+    end
+
     local linesToRemove = {}
 
     delta = delta * (delta > 0 and (0.5 * self.grassMoistureGainModifier) or (1.5 * self.grassMoistureLossModifier))

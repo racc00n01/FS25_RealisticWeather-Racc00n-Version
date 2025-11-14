@@ -1,0 +1,124 @@
+<l10n>
+	<texts>
+
+		<text name="rw_ui_fog" text="Paksua sumua"/>
+		<text name="rw_ui_hour" text="%s tunnin ajan" tag="format"/>
+		<text name="rw_ui_hours" text="%s tunnin ajan" tag="format"/>
+		<text name="rw_ui_minute" text="%s minuutin ajan" tag="format"/>
+		<text name="rw_ui_minutes" text="%s minuutin ajan" tag="format"/>
+		<text name="rw_ui_aboutToWither" text="Pelto %s on kuihtumassa" tag="format"/>
+		<text name="rw_ui_hasWithered" text="Pelto %s on kuihtunut" tag="format"/>
+		<text name="rw_ui_currentYield" text="Tämänhetkinen tuotto"/>
+		<text name="rw_ui_moisture" text="Kosteus"/>
+		<text name="rw_ui_witherChance" text="Kuihtumisen mahdollisuus"/>
+		<text name="rw_ui_retention" text="Kosteudenpidätys"/>
+		<text name="rw_ui_idealMoisture" text="Ideaali kosteus"/>
+		<text name="rw_ui_perfectMoisture" text="Täydellinen kosteus"/>
+		<text name="rw_ui_blizzard_coming" text="Lumimyrsky tulossa"/>
+		<text name="rw_ui_blizzard_now" text="Lumimyrsky"/>
+		<text name="rw_ui_drought_coming" text="Kuivuus tulossa"/>
+		<text name="rw_ui_drought_now" text="Kuivuus"/>
+		<text name="rw_ui_snowExpected" text="%scm - %scm odotettavissa" tag="format"/>
+		
+		<text name="rw_ui_amount" text="Määrä"/>
+		<text name="rw_ui_requiredMoisture" text="Vaadittu kosteus"/>
+		<text name="rw_ui_needsTedding" text="Pöyhintä tarvitaan"/>
+		<text name="rw_ui_yes" text="Kyllä"/>
+		<text name="rw_ui_no" text="Ei"/>
+
+        <text name="input_Irrigation" text="Kastelu"/>
+        <text name="finance_irrigationUpkeep" text="Kastelu"/>
+        <text name="rw_ui_irrigation_start" text="Aloita kastelu"/>
+        <text name="rw_ui_irrigation_stop" text="Lopeta kastelu"/>
+        <text name="rw_ui_pendingIrrigationCost" text="Maksu vireillä kastelusta"/>
+        <text name="rw_ui_irrigationUpkeep" text="Kastelun ylläpito"/>
+		<text name="rw_ui_inactive" text="Toimeton"/>
+		<text name="rw_ui_active" text="Aktiivinen"/>
+
+		<text name="rw_ui_today" text="Tänään"/>
+		<text name="rw_ui_cellWidth" text="Solun leveys"/>
+		<text name="rw_ui_cellHeight" text="Solun korkeus"/>
+		<text name="rw_ui_ownedFields" text="Omistetut pellot"/>
+		<text name="rw_ui_allFields" text="Kaikki pellot"/>
+		<text name="rw_ui_teleport" text="Teleporttaa"/>
+		
+		
+		<text name="rw_contract_field_irrigation_title" text="Kastelu"/>
+		<text name="rw_contract_field_irrigation_description" text="Kastele peltoa nostaaksesi pellon keskimääräistä kosteutta tavoitetasolle"/>
+		<text name="rw_contract_field_irrigation_currentAverage" text="Keskimääräinen kosteus"/>
+		<text name="rw_contract_field_irrigation_targetAverage" text="Keskimääräisen kosteuden tavoite"/>
+		
+		
+		
+		<!--  SETTINGS  -->
+
+
+		<text name="rw_settings" text="Realistic Weather"/>
+
+		<text name="rw_settings_off" text="Pois"/>
+		<text name="rw_settings_on" text="Päällä"/>
+		
+		<text name="rw_settings_witheringEnabled_label" text="Sadon kuihtuminen"/>
+		<text name="rw_settings_witheringEnabled_tooltip_1" text="Alhainen kosteus ei kuihduta satoa"/>
+		<text name="rw_settings_witheringEnabled_tooltip_2" text="Alhainen kosteus kuihduttaa sadon"/>
+		
+		<text name="rw_settings_rebuildMoistureMap_label" text="Uudista kosteuskartta"/>
+		<text name="rw_settings_rebuildMoistureMap_tooltip" text="Poista ja uudista kosteuskartta omilla valinnoilla"/>
+		<text name="rw_settings_rebuildMoistureMap_text" text="Uudista Kosteuskartta"/>
+
+		<text name="rw_settings_performanceIndex_label" text="Suorituskykyindeksi"/>
+		<text name="rw_settings_performanceIndex_tooltip" text="Arvon nosto parantaa suorityskykyä"/>
+
+		<text name="rw_settings_witheringChance_label" text="Kuihtumisen mahdollisuus"/>
+		<text name="rw_settings_witheringChance_tooltip" text="Muuttaa sadon kuihtumisen todennäköisyyttää alhaisen kosteuden vuoksi"/>
+
+		<text name="rw_settings_moistureGainModifier_label" text="Kosteuden kertymisen muunnin"/>
+		<text name="rw_settings_moistureGainModifier_tooltip" text="Muuttaa kosteuden kertymisen määrää"/>
+
+		<text name="rw_settings_moistureLossModifier_label" text="Kosteuden poistumisen muunnin"/>
+		<text name="rw_settings_moistureLossModifier_tooltip" text="Muuttaa kosteuden poistumisen määrää"/>
+
+		<text name="rw_settings_moistureOverlayBehaviour_label" text="Kosteus overlay"/>
+		<text name="rw_settings_moistureOverlayBehaviour_tooltip_1" text="Kosteus overlay ei näy koskaan"/>
+		<text name="rw_settings_moistureOverlayBehaviour_tooltip_2" text="Kosteus overlay näkyy vain pelloilla"/>
+		<text name="rw_settings_moistureOverlayBehaviour_tooltip_3" text="Kosteus overlay näkyy aina"/>
+		<text name="rw_settings_moistureOverlayBehaviour_texts_1" text="Pois"/>
+		<text name="rw_settings_moistureOverlayBehaviour_texts_2" text="Rajoitettu"/>
+		<text name="rw_settings_moistureOverlayBehaviour_texts_3" text="Päällä"/>
+
+		<text name="rw_settings_moistureFrameBehaviour_label" text="Kosteusnäyttö"/>
+		<text name="rw_settings_moistureFrameBehaviour_tooltip_1" text="Päävalikon kosteusnäyttö näyttää kaikki solut valitusta pellosta"/>
+		<text name="rw_settings_moistureFrameBehaviour_tooltip_2" text="Päävalikon kosteusnäyttö näyttää keskimääräisen arvon jokaiselta pellolta (parempi suorituskyky)"/>
+		<text name="rw_settings_moistureFrameBehaviour_texts_1" text="Yks.kohtainen"/>
+		<text name="rw_settings_moistureFrameBehaviour_texts_2" text="Rajoitettu"/>
+
+		<text name="rw_settings_blizzardsEnabled_label" text="Lumimyrskyt"/>
+		<text name="rw_settings_blizzardsEnabled_tooltip_1" text="Lumimyrskyt poissa käytöstä"/>
+		<text name="rw_settings_blizzardsEnabled_tooltip_2" text="Lumimyrskyt käytössä"/>
+
+		<text name="rw_settings_droughtsEnabled_label" text="Kuivuudet"/>
+		<text name="rw_settings_droughtsEnabled_tooltip_1" text="Kuivuudet poissa käytöstä"/>
+		<text name="rw_settings_droughtsEnabled_tooltip_2" text="Kuivuudet käytössä"/>
+
+		<text name="rw_settings_grassMoistureGainModifier_label" text="Ruohon kosteuden kertymisen muunnin"/>
+		<text name="rw_settings_grassMoistureGainModifier_tooltip" text="Muuttaa leikatun ruohon kosteuden kertymisen määrää"/>
+
+		<text name="rw_settings_grassMoistureLossModifier_label" text="Ruohon kosteuden poistumisen muunnin"/>
+		<text name="rw_settings_grassMoistureLossModifier_tooltip" text="Muuttaa leikatun ruohon kosteuden poistumisen määrää"/>
+
+		<text name="rw_settings_puddlesEnabled_label" text="Lätäköt"/>
+		<text name="rw_settings_puddlesEnabled_tooltip_1" text="Lätäköt poissa käytöstä"/>
+		<text name="rw_settings_puddlesEnabled_tooltip_2" text="Lätäköt käytössä"/>
+
+		<text name="rw_settings_fireEnabled_label" text="Viljapalot"/>
+		<text name="rw_settings_fireEnabled_tooltip_1" text="Viljapalot(tulipalo) poissa käytöstä"/>
+		<text name="rw_settings_fireEnabled_tooltip_2" text="Viljapalot(tulipalo) käytössä"/>
+
+		<text name="rw_settings_moistureYieldFactor_label" text="Kosteuden vaikutus satoon"/>
+		<text name="rw_settings_moistureYieldFactor_tooltip" text="Muuttaa kuinka paljon kosteus vaikuttaa sadon määrään"/>
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
+		
+	</texts>
+</l10n>

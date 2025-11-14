@@ -35,87 +35,90 @@
 		<text name="rw_ui_inactive" text="Inactif"/>
 		<text name="rw_ui_active" text="Actif"/>
 
-		<text name="rw_ui_today" text="Today"/>
-		<text name="rw_ui_cellWidth" text="Cell Width"/>
-		<text name="rw_ui_cellHeight" text="Cell Height"/>
-		<text name="rw_ui_ownedFields" text="Owned Fields"/>
-		<text name="rw_ui_allFields" text="All Fields"/>
-		<text name="rw_ui_teleport" text="Teleport"/>
+		<text name="rw_ui_today" text="Aujourd'hui"/>
+		<text name="rw_ui_cellWidth" text="Largeur de la cellule"/>
+		<text name="rw_ui_cellHeight" text="Hauteur de la cellule"/>
+		<text name="rw_ui_ownedFields" text="Domaines détenus"/>
+		<text name="rw_ui_allFields" text="Tous les domaines"/>
+		<text name="rw_ui_teleport" text="Téléportation"/>
 
 
 		<text name="rw_contract_field_irrigation_title" text="Irrigation"/>
-		<text name="rw_contract_field_irrigation_description" text="Irrigate the field to increase the average moisture to the target level"/>
-		<text name="rw_contract_field_irrigation_currentAverage" text="Average moisture"/>
-		<text name="rw_contract_field_irrigation_targetAverage" text="Target average moisture"/>
+		<text name="rw_contract_field_irrigation_description" text="Irriguer le champ pour augmenter l'humidité moyenne jusqu'au niveau cible."/>
+		<text name="rw_contract_field_irrigation_currentAverage" text="Humidité moyenne"/>
+		<text name="rw_contract_field_irrigation_targetAverage" text="Humidité moyenne cible"/>
 
 
 
 		<!--  SETTINGS  -->
 
 
-		<text name="rw_settings" text="Realistic Weather"/>
+		<text name="rw_settings" text="Météo réaliste"/>
 
-		<text name="rw_settings_off" text="Off"/>
-		<text name="rw_settings_on" text="On"/>
+		<text name="rw_settings_off" text="Arrêt"/>
+		<text name="rw_settings_on" text="Sur"/>
 
-		<text name="rw_settings_witheringEnabled_label" text="Crop Withering"/>
-		<text name="rw_settings_witheringEnabled_tooltip_1" text="Crops will not wither from low moisture"/>
-		<text name="rw_settings_witheringEnabled_tooltip_2" text="Crops will wither from low moisture"/>
+		<text name="rw_settings_witheringEnabled_label" text="Flétrissement des cultures"/>
+		<text name="rw_settings_witheringEnabled_tooltip_1" text="Les cultures ne se flétrissent pas en cas de faible humidité"/>
+		<text name="rw_settings_witheringEnabled_tooltip_2" text="Les cultures se flétrissent en raison du manque d'humidité"/>
 
-		<text name="rw_settings_rebuildMoistureMap_label" text="Rebuild Moisture Map"/>
-		<text name="rw_settings_rebuildMoistureMap_tooltip" text="Delete and rebuild the moisture map with custom arguments"/>
-		<text name="rw_settings_rebuildMoistureMap_text" text="Rebuild Moisture Map"/>
+		<text name="rw_settings_rebuildMoistureMap_label" text="Reconstruire la carte d'humidité"/>
+		<text name="rw_settings_rebuildMoistureMap_tooltip" text="Supprimer et reconstruire la carte d'humidité avec des arguments personnalisés"/>
+		<text name="rw_settings_rebuildMoistureMap_text" text="Reconstruire la carte d'humidité"/>
 
-		<text name="rw_settings_performanceIndex_label" text="Performance Index"/>
-		<text name="rw_settings_performanceIndex_tooltip" text="Increase this value to improve performance"/>
+		<text name="rw_settings_performanceIndex_label" text="Indice de performance"/>
+		<text name="rw_settings_performanceIndex_tooltip" text="Augmenter cette valeur pour améliorer les performances"/>
 
-		<text name="rw_settings_witheringChance_label" text="Withering Chance"/>
-		<text name="rw_settings_witheringChance_tooltip" text="Change the likelihood of crops withering due to low moisture"/>
+		<text name="rw_settings_witheringChance_label" text="Le risque de dépérissement"/>
+		<text name="rw_settings_witheringChance_tooltip" text="Modification de la probabilité de flétrissement des cultures en raison d'un manque d'humidité"/>
 
-		<text name="rw_settings_moistureGainModifier_label" text="Moisture Gain Modifier"/>
-		<text name="rw_settings_moistureGainModifier_tooltip" text="Change the amount of moisture gained"/>
+		<text name="rw_settings_moistureGainModifier_label" text="Modificateur de gain d'humidité"/>
+		<text name="rw_settings_moistureGainModifier_tooltip" text="Modifier la quantité d'humidité acquise"/>
 
-		<text name="rw_settings_moistureLossModifier_label" text="Moisture Loss Modifier"/>
-		<text name="rw_settings_moistureLossModifier_tooltip" text="Change the amount of moisture lost"/>
+		<text name="rw_settings_moistureLossModifier_label" text="Modificateur de perte d'humidité"/>
+		<text name="rw_settings_moistureLossModifier_tooltip" text="Modifier la quantité d'humidité perdue"/>
 
-		<text name="rw_settings_moistureOverlayBehaviour_label" text="Moisture Overlay"/>
-		<text name="rw_settings_moistureOverlayBehaviour_tooltip_1" text="The moisture overlay will never be shown"/>
-		<text name="rw_settings_moistureOverlayBehaviour_tooltip_2" text="The moisture overlay will only be shown when in a field"/>
-		<text name="rw_settings_moistureOverlayBehaviour_tooltip_3" text="The moisture overlay will always be shown"/>
-		<text name="rw_settings_moistureOverlayBehaviour_texts_1" text="Off"/>
-		<text name="rw_settings_moistureOverlayBehaviour_texts_2" text="Limited"/>
-		<text name="rw_settings_moistureOverlayBehaviour_texts_3" text="On"/>
+		<text name="rw_settings_moistureOverlayBehaviour_label" text="Recouvrement de l'humidité"/>
+		<text name="rw_settings_moistureOverlayBehaviour_tooltip_1" text="Le recouvrement de l'humidité ne sera jamais affiché"/>
+		<text name="rw_settings_moistureOverlayBehaviour_tooltip_2" text="Le recouvrement de l'humidité ne s'affiche que dans un champ."/>
+		<text name="rw_settings_moistureOverlayBehaviour_tooltip_3" text="Le recouvrement de l'humidité sera toujours affiché"/>
+		<text name="rw_settings_moistureOverlayBehaviour_texts_1" text="Arrêt"/>
+		<text name="rw_settings_moistureOverlayBehaviour_texts_2" text="Limitée"/>
+		<text name="rw_settings_moistureOverlayBehaviour_texts_3" text="Sur"/>
 
-		<text name="rw_settings_moistureFrameBehaviour_label" text="Moisture Screen"/>
-		<text name="rw_settings_moistureFrameBehaviour_tooltip_1" text="The moisture screen in the main menu will show all cells in the selected field"/>
-		<text name="rw_settings_moistureFrameBehaviour_tooltip_2" text="The moisture screen in the main menu will show the average values of each field (better for performance)"/>
-		<text name="rw_settings_moistureFrameBehaviour_texts_1" text="Detailed"/>
-		<text name="rw_settings_moistureFrameBehaviour_texts_2" text="Limited"/>
+		<text name="rw_settings_moistureFrameBehaviour_label" text="Tamis anti-humidité"/>
+		<text name="rw_settings_moistureFrameBehaviour_tooltip_1" text="L'écran humidité du menu principal affiche toutes les cellules du champ sélectionné."/>
+		<text name="rw_settings_moistureFrameBehaviour_tooltip_2" text="L'écran d'humidité du menu principal affiche les valeurs moyennes de chaque champ (meilleur pour les performances)."/>
+		<text name="rw_settings_moistureFrameBehaviour_texts_1" text="Détaillé"/>
+		<text name="rw_settings_moistureFrameBehaviour_texts_2" text="Limitée"/>
 
 		<text name="rw_settings_blizzardsEnabled_label" text="Blizzards"/>
-		<text name="rw_settings_blizzardsEnabled_tooltip_1" text="Blizzards are disabled"/>
-		<text name="rw_settings_blizzardsEnabled_tooltip_2" text="Blizzards are enabled"/>
+		<text name="rw_settings_blizzardsEnabled_tooltip_1" text="Les blizzards sont désactivés"/>
+		<text name="rw_settings_blizzardsEnabled_tooltip_2" text="Les blizzards sont activés"/>
 
-		<text name="rw_settings_droughtsEnabled_label" text="Droughts"/>
-		<text name="rw_settings_droughtsEnabled_tooltip_1" text="Droughts are disabled"/>
-		<text name="rw_settings_droughtsEnabled_tooltip_2" text="Droughts are enabled"/>
+		<text name="rw_settings_droughtsEnabled_label" text="Sécheresses"/>
+		<text name="rw_settings_droughtsEnabled_tooltip_1" text="Les sécheresses sont désactivées"/>
+		<text name="rw_settings_droughtsEnabled_tooltip_2" text="Les sécheresses sont activées"/>
 
-		<text name="rw_settings_grassMoistureGainModifier_label" text="Grass Moisture Gain Modifier"/>
-		<text name="rw_settings_grassMoistureGainModifier_tooltip" text="Change the amount of moisture gained for cut grass"/>
+		<text name="rw_settings_grassMoistureGainModifier_label" text="Modificateur du gain d'humidité de l'herbe"/>
+		<text name="rw_settings_grassMoistureGainModifier_tooltip" text="Modifier le taux d'humidité de l'herbe coupée"/>
 
-		<text name="rw_settings_grassMoistureLossModifier_label" text="Grass Moisture Loss Modifier"/>
-		<text name="rw_settings_grassMoistureLossModifier_tooltip" text="Change the amount of moisture lost for cut grass"/>
+		<text name="rw_settings_grassMoistureLossModifier_label" text="Modificateur de perte d'humidité de l'herbe"/>
+		<text name="rw_settings_grassMoistureLossModifier_tooltip" text="Modifier la quantité d'humidité perdue pour l'herbe coupée"/>
 
-		<text name="rw_settings_puddlesEnabled_label" text="Puddles"/>
-		<text name="rw_settings_puddlesEnabled_tooltip_1" text="Puddles are disabled"/>
-		<text name="rw_settings_puddlesEnabled_tooltip_2" text="Puddles are enabled"/>
+		<text name="rw_settings_puddlesEnabled_label" text="Flaques d'eau"/>
+		<text name="rw_settings_puddlesEnabled_tooltip_1" text="Les flaques d'eau sont désactivées"/>
+		<text name="rw_settings_puddlesEnabled_tooltip_2" text="Les flaques d'eau sont activées"/>
 
-		<text name="rw_settings_fireEnabled_label" text="Crop Fires"/>
-		<text name="rw_settings_fireEnabled_tooltip_1" text="Crop fires are disabled"/>
-		<text name="rw_settings_fireEnabled_tooltip_2" text="Crop fires are enabled"/>
+		<text name="rw_settings_fireEnabled_label" text="Incendies de cultures"/>
+		<text name="rw_settings_fireEnabled_tooltip_1" text="Les incendies de cultures sont désactivés"/>
+		<text name="rw_settings_fireEnabled_tooltip_2" text="Les incendies de cultures sont activés"/>
 
-		<text name="rw_settings_moistureYieldFactor_label" text="Moisture Yield Factor"/>
-		<text name="rw_settings_moistureYieldFactor_tooltip" text="Change the harvest yield added by moisture"/>
+		<text name="rw_settings_moistureYieldFactor_label" text="Facteur de rendement de l'humidité"/>
+		<text name="rw_settings_moistureYieldFactor_tooltip" text="Modifier le rendement de la récolte en fonction de l'humidité"/>
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
 
 	</texts>
 </l10n>

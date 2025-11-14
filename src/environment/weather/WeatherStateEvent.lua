@@ -5,7 +5,6 @@ function RW_WeatherStateEvent.new(snowHeight, timeSinceLastRain, cellWidth, cell
     local self = WeatherStateEvent.emptyNew()
     self.snowHeight = snowHeight
     self.timeSinceLastRain = timeSinceLastRain
-    --self.moisture = moisture
 
     self.cellWidth, self.cellHeight, self.mapWidth, self.mapHeight, self.currentHourlyUpdateQuarter, self.numRows, self.numColumns, self.rows, self.irrigatingFields, self.lastFogDay = cellWidth, cellHeight, mapWidth, mapHeight, currentHourlyUpdateQuarter, numRows, numColumns, rows, irrigatingFields, lastFogDay
     return self
@@ -19,16 +18,10 @@ function RW_WeatherStateEvent:readStream(_, streamId, connection)
     self.timeSinceLastRain = streamReadFloat32(streamId)
     self.lastFogDay = streamReadUInt16(streamId)
 
-
-    --self.moisture = streamReadFloat32(streamId)
-
     self.cellWidth = streamReadFloat32(streamId)
     self.cellHeight = streamReadFloat32(streamId)
     self.mapWidth = streamReadFloat32(streamId)
     self.mapHeight = streamReadFloat32(streamId)
-    --self.moistureDeltaLower = streamReadFloat32(streamId)
-    --self.moistureDeltaUpper = streamReadFloat32(streamId)
-    --self.lastMoistureDelta = streamReadFloat32(streamId)
     self.currentHourlyUpdateQuarter = streamReadUInt8(streamId)
     self.numRows = streamReadUInt16(streamId)
     self.numColumns = streamReadUInt16(streamId)
@@ -98,16 +91,10 @@ function RW_WeatherStateEvent:writeStream(_, connection, _)
     streamWriteFloat32(connection, self.timeSinceLastRain)
     streamWriteUInt16(connection, self.lastFogDay)
 
-
-    --streamWriteFloat32(connection, self.moisture)
-
     streamWriteFloat32(connection, self.cellWidth or 5)
     streamWriteFloat32(connection, self.cellHeight or 5)
     streamWriteFloat32(connection, self.mapWidth or 2048)
     streamWriteFloat32(connection, self.mapHeight or 2048)
-    --streamWriteFloat32(connection, self.moistureDeltaLower or 0)
-    --streamWriteFloat32(connection, self.moistureDeltaUpper or 0)
-    --streamWriteFloat32(connection, self.lastMoistureDelta or 0)
     streamWriteUInt8(connection, self.currentHourlyUpdateQuarter or 1)
     streamWriteUInt16(connection, self.numRows or 0)
     streamWriteUInt16(connection, self.numColumns or 0)

@@ -19,19 +19,19 @@
 		<text name="rw_ui_drought_coming" text="Szárazság közeleg"/>
 		<text name="rw_ui_drought_now" text="Szárazság folyamatban"/>
 		<text name="rw_ui_snowExpected" text="%scm - %scm várható" tag="format"/>
-		
+
 		<text name="rw_ui_amount" text="Mennyiség"/>
 		<text name="rw_ui_requiredMoisture" text="Szükséges nedvesség"/>
 		<text name="rw_ui_needsTedding" text="Forgatásra szorul"/>
 		<text name="rw_ui_yes" text="Igen"/>
 		<text name="rw_ui_no" text="Nem"/>
 
-        <text name="input_Irrigation" text="Öntözés"/>
-        <text name="finance_irrigationUpkeep" text="Öntözés"/>
-        <text name="rw_ui_irrigation_start" text="Öntözés elkezdése"/>
-        <text name="rw_ui_irrigation_stop" text="Öntözés befejezése"/>
-        <text name="rw_ui_pendingIrrigationCost" text="Függő öntözési költségek"/>
-        <text name="rw_ui_irrigationUpkeep" text="Öntözés fenntartása"/>
+		<text name="input_Irrigation" text="Öntözés"/>
+		<text name="finance_irrigationUpkeep" text="Öntözés"/>
+		<text name="rw_ui_irrigation_start" text="Öntözés elkezdése"/>
+		<text name="rw_ui_irrigation_stop" text="Öntözés befejezése"/>
+		<text name="rw_ui_pendingIrrigationCost" text="Függő öntözési költségek"/>
+		<text name="rw_ui_irrigationUpkeep" text="Öntözés fenntartása"/>
 		<text name="rw_ui_inactive" text="Inaktív"/>
 		<text name="rw_ui_active" text="Actív"/>
 
@@ -41,15 +41,15 @@
 		<text name="rw_ui_ownedFields" text="Birktokolt földek"/>
 		<text name="rw_ui_allFields" text="Összes föld"/>
 		<text name="rw_ui_teleport" text="Ugrás"/>
-		
-		
+
+
 		<text name="rw_contract_field_irrigation_title" text="Öntözés"/>
 		<text name="rw_contract_field_irrigation_description" text="Öntözd a területet, hogy a nedvesség elérje a célértéket"/>
 		<text name="rw_contract_field_irrigation_currentAverage" text="Átlagos nedvesség"/>
 		<text name="rw_contract_field_irrigation_targetAverage" text="Célzott átlagos nedvességtartalom"/>
-		
-		
-		
+
+
+
 		<!--  SETTINGS  -->
 
 
@@ -57,11 +57,11 @@
 
 		<text name="rw_settings_off" text="Off"/>
 		<text name="rw_settings_on" text="On"/>
-		
+
 		<text name="rw_settings_witheringEnabled_label" text="Crop Withering"/>
 		<text name="rw_settings_witheringEnabled_tooltip_1" text="Crops will not wither from low moisture"/>
 		<text name="rw_settings_witheringEnabled_tooltip_2" text="Crops will wither from low moisture"/>
-		
+
 		<text name="rw_settings_rebuildMoistureMap_label" text="Rebuild Moisture Map"/>
 		<text name="rw_settings_rebuildMoistureMap_tooltip" text="Delete and rebuild the moisture map with custom arguments"/>
 		<text name="rw_settings_rebuildMoistureMap_text" text="Rebuild Moisture Map"/>
@@ -116,6 +116,9 @@
 
 		<text name="rw_settings_moistureYieldFactor_label" text="Moisture Yield Factor"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Change the harvest yield added by moisture"/>
-		
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
+
 	</texts>
 </l10n>

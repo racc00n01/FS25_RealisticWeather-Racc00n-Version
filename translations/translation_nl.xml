@@ -20,19 +20,19 @@
 		<text name="rw_ui_drought_coming" text="Droogte Opkomst"/>
 		<text name="rw_ui_drought_now" text="Droogte Bezig"/>
 		<text name="rw_ui_snowExpected" text="%scm - %scm verwacht" tag="format"/>
-		
+
 		<text name="rw_ui_amount" text="Hoeveelheid"/>
 		<text name="rw_ui_requiredMoisture" text="Verreiste vochtigheid"/>
 		<text name="rw_ui_needsTedding" text="Moet geschud worden"/>
 		<text name="rw_ui_yes" text="Ja"/>
 		<text name="rw_ui_no" text="Nee"/>
 
-        <text name="input_Irrigation" text="Irrigatie"/>
-        <text name="finance_irrigationUpkeep" text="Irrigatie"/>
-        <text name="rw_ui_irrigation_start" text="Start Irrigatie"/>
-        <text name="rw_ui_irrigation_stop" text="Stop Irrigatie"/>
-        <text name="rw_ui_pendingIrrigationCost" text="Verwachte irigatiekost"/>
-        <text name="rw_ui_irrigationUpkeep" text="Irrigatie Onderhoud"/>
+		<text name="input_Irrigation" text="Irrigatie"/>
+		<text name="finance_irrigationUpkeep" text="Irrigatie"/>
+		<text name="rw_ui_irrigation_start" text="Start Irrigatie"/>
+		<text name="rw_ui_irrigation_stop" text="Stop Irrigatie"/>
+		<text name="rw_ui_pendingIrrigationCost" text="Verwachte irigatiekost"/>
+		<text name="rw_ui_irrigationUpkeep" text="Irrigatie Onderhoud"/>
 		<text name="rw_ui_inactive" text="Niet Actief"/>
 		<text name="rw_ui_active" text="Actief"/>
 
@@ -42,29 +42,29 @@
 		<text name="rw_ui_ownedFields" text="Velden In Bezit"/>
 		<text name="rw_ui_allFields" text="Alle Velden"/>
 		<text name="rw_ui_teleport" text="Teleporteren"/>
-		
-		
+
+
 		<text name="rw_contract_field_irrigation_title" text="Irrigatie"/>
 		<text name="rw_contract_field_irrigation_description" text="Besproei het veld om de gemiddelde vochtigheid te verhogen tot het gewenste niveau"/>
 		<text name="rw_contract_field_irrigation_currentAverage" text="Gemiddelde vochtigheid"/>
 		<text name="rw_contract_field_irrigation_targetAverage" text="Streef naar gemiddelde vochtigheid"/>
-		
-		
-		
+
+
+
 		<!--  SETTINGS  -->
 
 		<text name="rw_settings" text="Realistisch Weer"/>
 
 		<text name="rw_settings_off" text="Aan"/>
 		<text name="rw_settings_on" text="Uit"/>
-		
+
 		<text name="rw_settings_witheringEnabled_label" text="Gewas Verdroging"/>
 		<text name="rw_settings_witheringEnabled_tooltip_1" text="Gewassen zullen niet verdrogen door een lage vochtigheid"/>
 		<text name="rw_settings_witheringEnabled_tooltip_2" text="Gewassen zullen verdrogen door een lage vochtigheid"/>
-		
-		<text name="rw_settings_rebuildMoistureMap_label" text="Vernieuw Vocvhtigheidsmap"/>
+
+		<text name="rw_settings_rebuildMoistureMap_label" text="Vernieuw Vochtigheidsmap"/>
 		<text name="rw_settings_rebuildMoistureMap_tooltip" text="Verwijder en vernieuw de vochtigheidsmap met aangepaste instellingen"/>
-		<text name="rw_settings_rebuildMoistureMap_text" text="Vernieuw Vocvhtigheidsmap"/>
+		<text name="rw_settings_rebuildMoistureMap_text" text="Vernieuw Vochtigheidsmap"/>
 
 		<text name="rw_settings_performanceIndex_label" text="Prestatie-index"/>
 		<text name="rw_settings_performanceIndex_tooltip" text="Verhoog deze waarde om de prestaties te verbeteren"/>
@@ -92,7 +92,7 @@
 		<text name="rw_settings_moistureFrameBehaviour_texts_1" text="Gedetailleerd"/>
 		<text name="rw_settings_moistureFrameBehaviour_texts_2" text="Beperkt"/>
 
-		<text name="rw_settings_blizzardsEnabled_label" text="Sneeuwstromen"/>
+		<text name="rw_settings_blizzardsEnabled_label" text="Sneeuwstormen"/>
 		<text name="rw_settings_blizzardsEnabled_tooltip_1" text="Sneeuwstormen zijn uitgeschakeld"/>
 		<text name="rw_settings_blizzardsEnabled_tooltip_2" text="Sneeuwstormen zijn ingeschakeld"/>
 
@@ -114,8 +114,11 @@
 		<text name="rw_settings_fireEnabled_tooltip_1" text="Gewasbranden zijn uitgeschakeld"/>
 		<text name="rw_settings_fireEnabled_tooltip_2" text="Gewasbranden zijn ingeschakeld"/>
 
-		<text name="rw_settings_moistureYieldFactor_label" text="Vochtigheid Opbrengsbonus"/>
+		<text name="rw_settings_moistureYieldFactor_label" text="Vochtigheid Opbrengstbonus"/>
 		<text name="rw_settings_moistureYieldFactor_tooltip" text="Verandert de opbrengstbonus toegevoegd door vochtigheid"/>
-		
+
+
+		<text name="rw_ui_messageNumber" text="%s-%s of %s"/>
+
 	</texts>
 </l10n>
