@@ -1,22 +1,19 @@
-<modDesc descVersion="104">
-    <author>Arrow</author>
-    <version>1.2.1.0</version>
+<modDesc descVersion="107">
+    <author>Racc00n</author>
+    <version>1.2.1.1</version>
     <title>
-        <en>Realistic Weather</en>
+        <en>Realistic Weather Racc00n Version</en>
         <de>Realistisches Wetter</de>
         <fr>Météo Réaliste</fr>
     </title>
     <description>
         <en>
-        <![CDATA[ An overhaul to the weather system, focusing mainly on snow and ground moisture.
+            <![CDATA[ Weather overhaul (this fork removes field moisture, irrigation, grass drying, and puddles; keeps weather, audio, wheels, and fires).
+
 Features:
 
 - Adds 3 new "disaster" weather events, blizzards, droughts and extremely thick fog
-- New grass moisture system which dries tedded grass into hay over time
 - Extends the info display in the top right, adding information on temperature, upcoming disasters and predicted snow amount
-- Adds a moisture mechanic to fields; each type of crop has an ideal moisture range, being inside this range increases harvest yield
-- Moisture changes constantly depending on sunlight, temperature and rainfall
-- Crops with extremely low moisture will wither
 - Hail will now cause damage and wear to vehicles left outside
 - Wheel physics changed significantly
 - Maximum amount of snow has been doubled
@@ -34,7 +31,7 @@ Features:
 --- Snow will likely remain for much longer time
 
 - Droughts:
---- Droughts result in extreme heat which will lead to rapid moisture loss in fields
+--- Droughts result in extreme heat and harsher dry conditions
 
 - Fog:
 --- Extremely thick fogs may occur where visibility is extremely low for up to 14 hours
@@ -46,13 +43,6 @@ Features:
 --- Wheels will gradually destroy snow more realistically, based on the weight the wheel is carrying, snow amount and snow wetness
 --- Heavier vehicles will sink in snow much more than lighter vehicles; sunk vehicles may get completely stuck
 --- Driving cars and heavy equipment in heavy snow will be almost impossible as a result, specific vehicles, such as vehicles with tracks, are required
-
-- Grass Moisture System:
---- After tedding mowed grass, it will dry into hay over time based on its moisture
---- Tedded grass has its own individual moisture content based on the moisture of the field when it was mowed
---- Tedded grass will gain/lose moisture at different rates than fields
---- New info box when standing on tedded grass, showing its moisture, required moisture, and whether it needs to be tedded (currently disabled on MP)
---- Please bear in mind that this feature in its current state may cause lag on lower-end systems or on extremely large fields
 
 - Github:
 https://github.com/Arrow-kb/FS25_RealisticWeather
@@ -424,54 +414,23 @@ Journal des modifications :
         <sourceFile filename="src/environment/weather/Weather.lua"/>
         <sourceFile filename="src/environment/weather/WeatherInstance.lua"/>
         <sourceFile filename="src/environment/weather/WeatherStateEvent.lua"/>
-        <sourceFile filename="src/fields/FieldState.lua"/>
         <sourceFile filename="src/fillTypes/FillTypeManager.lua"/>
         <sourceFile filename="src/gui/hud/GameInfoDisplay.lua"/>
         <sourceFile filename="src/gui/hud/RW_InfoDisplayKeyValueBox.lua"/>
-        <sourceFile filename="src/gui/MoistureArgumentsDialog.lua"/>
-        <sourceFile filename="src/gui/RealisticWeatherFrame.lua"/>
-        <sourceFile filename="src/missions/field/HarvestMission.lua"/>
-        <sourceFile filename="src/missions/field/IrrigationMission.lua"/>
-        <sourceFile filename="src/player/PlayerHUDUpdater.lua"/>
-        <sourceFile filename="src/player/PlayerInputComponent.lua"/>
-        <sourceFile filename="src/specialization/TypeManager.lua"/>
+        <sourceFile filename="src/gui/InGameMenuSettingsFrame.lua"/>
         <sourceFile filename="src/sounds/AmbientSoundSystem.lua"/>
         <sourceFile filename="src/vehicles/specializations/Drivable.lua"/>
-        <sourceFile filename="src/vehicles/specializations/Tedder.lua"/>
         <sourceFile filename="src/vehicles/wheels/WheelPhysics.lua"/>
         <sourceFile filename="src/vehicles/wheels/WheelDestruction.lua"/>
         <sourceFile filename="src/vehicles/WheelsUtil.lua"/>
-        <sourceFile filename="src/FieldIrrigationChangeEvent.lua"/>
         <sourceFile filename="src/Fire.lua"/>
         <sourceFile filename="src/FireEvent.lua"/>
         <sourceFile filename="src/FireSystem.lua"/>
         <sourceFile filename="src/FSBaseMission.lua"/>
         <sourceFile filename="src/FSCareerMissionInfo.lua"/>
-        <sourceFile filename="src/GrassMoistureSystem.lua"/>
-        <sourceFile filename="src/I18N.lua"/>
-        <sourceFile filename="src/MoistureSyncEvent.lua"/>
-        <sourceFile filename="src/MoistureSystem.lua"/>
-        <sourceFile filename="src/NewPuddleEvent.lua"/>
-        <sourceFile filename="src/Puddle.lua"/>
-        <sourceFile filename="src/PuddleSystem.lua"/>
-        <sourceFile filename="src/PuddleSystemStateEvent.lua"/>
         <sourceFile filename="src/RWSettings.lua"/>
         <sourceFile filename="src/RWUtils.lua"/>
-		<sourceFile filename="src/RW_BroadcastSettingsEvent.lua"/>
+        <sourceFile filename="src/RW_BroadcastSettingsEvent.lua"/>
     </extraSourceFiles>
     <l10n filenamePrefix="translations/translation"/>
-    <inputBinding>
-        <actionBinding action="Irrigation">
-            <binding device="KB_MOUSE_DEFAULT" input="KEY_rctrl KEY_l"/>
-        </actionBinding>
-    </inputBinding>
-    <actions>
-        <action name="Irrigation"/>
-    </actions>
-	<missionVehicles filename="xml/missionVehicles.xml"/>
-	<specializations>
-		<specialization name="extendedCutter" className="ExtendedCutter" filename="src/vehicles/specializations/ExtendedCutter.lua"/>
-		<specialization name="extendedMower" className="ExtendedMower" filename="src/vehicles/specializations/ExtendedMower.lua"/>
-		<specialization name="extendedSprayer" className="ExtendedSprayer" filename="src/vehicles/specializations/ExtendedSprayer.lua"/>
-	</specializations>
 </modDesc>

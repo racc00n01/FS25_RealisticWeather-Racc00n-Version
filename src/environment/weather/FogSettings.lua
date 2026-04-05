@@ -1,5 +1,4 @@
 function FogSettings:readStream(streamId, connection)
-
 	self.groundFogCoverageEdge0 = streamReadFloat32(streamId)
 	self.groundFogCoverageEdge1 = streamReadFloat32(streamId)
 	self.groundFogExtraHeight = streamReadFloat32(streamId)
@@ -15,19 +14,14 @@ function FogSettings:readStream(streamId, connection)
 	self.groundFogWeatherTypes = {}
 
 	for i = 1, numWeatherTypes do
-
 		local weatherTypeName = streamReadString(streamId)
 		local weatherType = WeatherType.getByName(weatherTypeName)
-			
+
 		if weatherType ~= nil then self.groundFogWeatherTypes[weatherType] = true end
-
 	end
-
 end
 
-
 function FogSettings:writeStream(streamId, connection)
-
 	streamWriteFloat32(streamId, self.groundFogCoverageEdge0)
 	streamWriteFloat32(streamId, self.groundFogCoverageEdge1)
 	streamWriteFloat32(streamId, self.groundFogExtraHeight)
@@ -45,5 +39,4 @@ function FogSettings:writeStream(streamId, connection)
 	streamWriteUInt8(streamId, numWeatherTypes)
 
 	for weatherType, _ in pairs(self.groundFogWeatherTypes) do streamWriteString(streamId, WeatherType.getName(weatherType)) end
-
 end

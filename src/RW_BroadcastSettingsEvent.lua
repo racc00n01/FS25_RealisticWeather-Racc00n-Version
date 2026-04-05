@@ -96,7 +96,7 @@ function RW_BroadcastSettingsEvent:run(connection)
 
 		for _, s in pairs(RWSettings.SETTINGS) do
 			if s.dependancy and s.dependancy.name == self.setting and s.element ~= nil then
-				s.element:setDisabled(s.dependancy.state ~= state)
+				s.element:setDisabled(s.dependancy.state ~= setting.state)
 			end
 		end
 

@@ -18,7 +18,6 @@ local profile = Utils.getPerformanceClassId()
 
 
 function RW_Weather:update(_, dT)
-
     local timescale = dT * g_currentMission:getEffectiveTimeScale()
 
     if #self.forecastItems >= 2 then
@@ -89,29 +88,32 @@ function RW_Weather:update(_, dT)
     self.fogUpdater:update(timescale)
     self.rainUpdater:update(timescale)
 
-    if self.skyBoxUpdater ~= nil then self.skyBoxUpdater:update(timescale, self.owner.dayTime, self:getRainFallScale(), self:getTimeUntilRain()) end
+    if self.skyBoxUpdater ~= nil then self.skyBoxUpdater:update(timescale, self.owner.dayTime, self:getRainFallScale(),
+            self:getTimeUntilRain()) end
 
     local effectiveTimescale = g_currentMission:getEffectiveTimeScale()
     local temperature = self.temperatureUpdater:getTemperatureAtTime(self.owner.dayTime)
 
     if g_currentMission.missionInfo.isSnowEnabled then
-
         local blizzardFactor = currentWeather ~= nil and currentWeather.isBlizzard and self.blizzardsEnabled and 10 or 1
 
         self.isBlizzard = currentWeather ~= nil and currentWeather.isBlizzard and self.blizzardsEnabled
 
         if self:getIsSnowing() and temperature < 10 then
             local scale = 1 - temperature * 0.1
-            self.snowHeight = math.clamp(self.snowHeight + RW_Weather.FACTOR.SNOW_FACTOR * (timescale / 100000) * self:getSnowFallScale() * scale * blizzardFactor, 0, RW_Weather.FACTOR.SNOW_HEIGHT)
+            self.snowHeight = math.clamp(
+            self.snowHeight +
+            RW_Weather.FACTOR.SNOW_FACTOR * (timescale / 100000) * self:getSnowFallScale() * scale * blizzardFactor, 0,
+                RW_Weather.FACTOR.SNOW_HEIGHT)
         elseif temperature >= 10 then
             self.snowHeight = 0
             g_currentMission.snowSystem:removeAll()
         elseif temperature > 0 and self.snowHeight > 0 then
             local scale = self:getIsRaining() and math.max(5 / self:getRainFallScale(), 1.25) or 1
-            self.snowHeight = math.clamp(self.snowHeight - temperature * 0.001 * (timescale / 100000) * scale, 0, RW_Weather.FACTOR.SNOW_HEIGHT)
+            self.snowHeight = math.clamp(self.snowHeight - temperature * 0.001 * (timescale / 100000) * scale, 0,
+                RW_Weather.FACTOR.SNOW_HEIGHT)
             if self.snowHeight == 0 then g_currentMission.snowSystem:removeAll() end
         end
-
     else
         self.snowHeight = math.max(self.snowHeight - 0.005 * (dT / 1000) * (effectiveTimescale / 100), 0)
         self.isBlizzard = false
@@ -143,7 +145,6 @@ function RW_Weather:update(_, dT)
         local vehicles = g_currentMission.vehicleSystem.vehicles
 
         for _, vehicle in pairs(vehicles) do
-
             local wearable = vehicle.spec_wearable
 
             if wearable == nil then continue end
@@ -158,7 +159,6 @@ function RW_Weather:update(_, dT)
             local wearAmount = hail * 0.0018 * (timescale / 100000)
             wearable:addWearAmount(wearAmount, true)
             wearable:addDamageAmount(damageAmount, true)
-
         end
     end
 
@@ -167,7 +167,6 @@ function RW_Weather:update(_, dT)
     local hailfall = self:getHailFallScale()
 
     if rainfall > 0 or snowfall > 0 then
-
         local items = g_currentMission.itemSystem.itemByUniqueId
         local balesToDelete = {}
 
@@ -185,46 +184,7 @@ function RW_Weather:update(_, dT)
         end
 
         for i = #balesToDelete, 1, -1 do balesToDelete[i]:delete() end
-
     end
-
-
-    local draughtFactor = currentWeather ~= nil and currentWeather.isDraught and self.droughtsEnabled and 1.33 or 1
-    local temp = self.temperatureUpdater:getTemperatureAtTime(self.owner.dayTime)
-    local hour = math.floor(self.owner:getMinuteOfDay() / 60)
-    local daylightStart, dayLightEnd, _, _ = self.owner.daylight:getDaylightTimes()
-    --local moisture = self.moisture or (math.random(12, 25) / 100)
-    --local oldMoisture = moisture * 1
-
-    --if temp < 0 then wetness = wetness * 0.35 end
-    --if wetness > 0 then moistureDelta = moistureDelta + math.clamp(wetness * 0.001825, 0, 0.0001) end
-
-    local moistureSystem = g_currentMission.moistureSystem
-
-    local moistureDelta = math.clamp((rainfall + snowfall * 0.75 + hailfall * 0.15) * 0.009 * (timescale / 100000), 0, 0.00005) * moistureSystem.moistureGainModifier
-
-    local sunFactor = (hour >= daylightStart and hour < dayLightEnd and 1) or 0.33
-
-    if temp >= 45 then
-        moistureDelta = moistureDelta - (temp * 0.000012 * (timescale / 100000) * sunFactor * draughtFactor) * moistureSystem.moistureLossModifier
-    elseif temp >= 35 then
-        moistureDelta = moistureDelta - (temp * 0.0000088 * (timescale / 100000) * sunFactor * draughtFactor) * moistureSystem.moistureLossModifier
-    elseif temp >= 25 then
-        moistureDelta = moistureDelta - (temp * 0.0000038 * (timescale / 100000) * sunFactor * draughtFactor) * moistureSystem.moistureLossModifier
-    elseif temp >= 15 then
-        moistureDelta = moistureDelta - (temp * 0.0000012 * (timescale / 100000) * sunFactor * draughtFactor) * moistureSystem.moistureLossModifier
-    elseif temp > 0 then
-        moistureDelta = moistureDelta - (temp * 0.0000005 * (timescale / 100000) * sunFactor * draughtFactor) * moistureSystem.moistureLossModifier
-    end
-
-    --self.moisture = moisture
-
-
-    g_currentMission.grassMoistureSystem:update(moistureDelta)
-    moistureSystem:update(moistureDelta, timescale)
-
-
-
 
 
 
@@ -245,7 +205,6 @@ function RW_Weather:update(_, dT)
     -- ################################################################
 
     if profile >= 4 and g_currentMission.missionInfo.isSnowEnabled and self.snowHeight > SnowSystem.MIN_LAYER_HEIGHT and animalStepCount >= math.min(math.max(100, animalsToSink * 4), 500) then
-
         animalsToSink = 0
 
         local husbandries = g_currentMission.husbandrySystem.clusterHusbandries
@@ -254,7 +213,6 @@ function RW_Weather:update(_, dT)
             local animalsSunk = 0
 
             for _, husbandry in pairs(husbandries) do
-
                 if RW_Weather.isRealisticLivestockLoaded then
                     local husbandryIds = husbandry.husbandryIds or {}
 
@@ -276,7 +234,8 @@ function RW_Weather:update(_, dT)
                                 animalIdToPos[husbandryIds[i]][animalId] = {}
                             end
 
-                            if heightUnderAnimal > 0.05 and (oldX ~= x or oldZ ~= z) then snowSystem:setSnowHeightAtArea(x, z, x + 1, z + 1, x - 1, z - 1, heightUnderAnimal * 0.75) end
+                            if heightUnderAnimal > 0.05 and (oldX ~= x or oldZ ~= z) then snowSystem:setSnowHeightAtArea(
+                                x, z, x + 1, z + 1, x - 1, z - 1, heightUnderAnimal * 0.75) end
 
                             animalsSunk = animalsSunk + 1
                             animalIdToPos[husbandryIds[i]][animalId].x = x
@@ -307,7 +266,8 @@ function RW_Weather:update(_, dT)
                             animalIdToPos[husbandry.husbandryId][animalId] = {}
                         end
 
-                        if heightUnderAnimal > 0.05 and (oldX ~= x or oldZ ~= z) then snowSystem:setSnowHeightAtArea(x, z, x + 1, z + 1, x - 1, z - 1, heightUnderAnimal * 0.75) end
+                        if heightUnderAnimal > 0.05 and (oldX ~= x or oldZ ~= z) then snowSystem:setSnowHeightAtArea(x, z,
+                                x + 1, z + 1, x - 1, z - 1, heightUnderAnimal * 0.75) end
 
                         animalsSunk = animalsSunk + 1
                         animalIdToPos[husbandry.husbandryId][animalId].x = x
@@ -315,20 +275,16 @@ function RW_Weather:update(_, dT)
 
                         if animalsSunk >= RW_Weather.FACTOR.MAX_ANIMALS_SINK then break end
                     end
-
                 end
 
                 if animalsSunk >= RW_Weather.FACTOR.MAX_ANIMALS_SINK then break end
-
             end
         end
 
         animalStepCount = 0
-
     end
 
     animalStepCount = animalStepCount + 1
-
 end
 
 Weather.update = Utils.overwrittenFunction(Weather.update, RW_Weather.update)
@@ -342,7 +298,6 @@ function RW_Weather:fillWeatherForecast(_, isInitialSync)
     local newObjects = {}
 
     while (lastItem == nil or lastItem.startDay < self.owner.currentMonotonicDay + 9) and #self.forecastItems < maxNumOfforecastItemsItems do
-
         local startDay = self.owner.currentMonotonicDay
         local startDayTime = self.owner.dayTime
 
@@ -352,21 +307,19 @@ function RW_Weather:fillWeatherForecast(_, isInitialSync)
         end
 
         local endDay, endDayTime = self.owner:getDayAndDayTime(startDayTime, startDay)
-        local newObject = self:createRandomWeatherInstance(self.owner:getVisualSeasonAtDay(endDay), endDay, endDayTime, false)
+        local newObject = self:createRandomWeatherInstance(self.owner:getVisualSeasonAtDay(endDay), endDay, endDayTime,
+            false)
 
         local object = self:getWeatherObjectByIndex(newObject.season, newObject.objectIndex)
 
         if g_currentMission.missionInfo.isSnowEnabled and self.blizzardsEnabled and object.weatherType == WeatherType.SNOW and math.random() >= 0.985 then
-
             newObject.isBlizzard = true
             local minTemp = math.random(-15, -8)
             local maxTemp = math.random(minTemp + 3, minTemp + 8)
             object.temperatureUpdater:setTargetValues(minTemp, maxTemp, false)
-
         end
 
         if object.weatherType == WeatherType.SUN and self.droughtsEnabled and object.season == 2 and math.random() >= 0.985 then
-
             newObject.isDraught = true
             local minTemp = math.random(30, 35)
             local maxTemp = math.random(minTemp + 5, minTemp + 15)
@@ -376,13 +329,11 @@ function RW_Weather:fillWeatherForecast(_, isInitialSync)
             object.windUpdater.targetVelocity = wind
 
             object.rainUpdater.rainfallScale = 0
-
         end
 
         self:addWeatherForecast(newObject)
         table.insert(newObjects, newObject)
         lastItem = self.forecastItems[#self.forecastItems]
-
     end
 
     if #newObjects > 0 then g_server:broadcastEvent(WeatherAddObjectEvent.new(newObjects, isInitialSync or false), false) end
@@ -392,7 +343,6 @@ Weather.fillWeatherForecast = Utils.overwrittenFunction(Weather.fillWeatherForec
 
 
 function RW_Weather:randomizeFog(_, time)
-    
     if not g_currentMission:getIsServer() then return end
 
     local season = self.owner.currentSeason
@@ -410,57 +360,48 @@ function RW_Weather:randomizeFog(_, time)
         fog = seasonToFog:createFromTemplate()
 
         if season ~= 2 and math.random() >= 0.92 then
-
             fog.groundFogCoverageEdge0 = math.random(5, 10) / 100
             fog.groundFogCoverageEdge1 = math.random(90, 95) / 100
             fog.groundFogExtraHeight = math.random(25, 35)
             fog.groundFogGroundLevelDensity = math.random(85, 200) / 100
             fog.heightFogMaxHeight = math.random(650, 800)
             fog.heightFogGroundLevelDensity = math.random(75, 190) / 100
-            fog.groundFogEndDayTimeMinutes = math.min(math.random(fog.groundFogStartDayTimeMinutes + 120, fog.groundFogStartDayTimeMinutes + 860), 1439)
+            fog.groundFogEndDayTimeMinutes = math.min(
+            math.random(fog.groundFogStartDayTimeMinutes + 120, fog.groundFogStartDayTimeMinutes + 860), 1439)
 
             fog.groundFogWeatherTypes[WeatherType.SNOW] = true
             fog.groundFogWeatherTypes[WeatherType.RAIN] = true
 
             self.lastFogDay = currentDay
-
         end
     end
 
     self.fogUpdater:setTargetFog(fog, time)
-
 end
 
 Weather.randomizeFog = Utils.overwrittenFunction(Weather.randomizeFog, RW_Weather.randomizeFog)
 
 
 function RW_Weather:sendInitialState(_, connection)
-
-    local moistureSystem = g_currentMission.moistureSystem
-
-    connection:sendEvent(WeatherStateEvent.new(self.snowHeight, self.timeSinceLastRain, moistureSystem.cellWidth, moistureSystem.cellHeight, moistureSystem.mapWidth, moistureSystem.mapHeight, moistureSystem.currentHourlyUpdateQuarter, moistureSystem.numRows, moistureSystem.numColumns, moistureSystem.rows, moistureSystem.irrigatingFields, self.lastFogDay))
+    connection:sendEvent(WeatherStateEvent.new(self.snowHeight, self.timeSinceLastRain, self.lastFogDay))
     connection:sendEvent(WeatherAddObjectEvent.new(self.forecastItems, true, true))
     connection:sendEvent(FogStateEvent.new(self.fogUpdater))
-
 end
 
 Weather.sendInitialState = Utils.overwrittenFunction(Weather.sendInitialState, RW_Weather.sendInitialState)
 
 function RW_Weather:setInitialState(_, snowHeight, timeSinceLastRain, lastFogDay)
-
     self.snowHeight = snowHeight
     self.timeSinceLastRain = timeSinceLastRain
     self.lastFogDay = lastFogDay
 
     g_currentMission.snowSystem:setSnowHeight(self.snowHeight)
-
 end
 
 Weather.setInitialState = Utils.overwrittenFunction(Weather.setInitialState, RW_Weather.setInitialState)
 
 
 function RW_Weather:saveToXMLFile(handle, key)
-
     local xmlFile = XMLFile.wrap(handle)
 
     if xmlFile == nil then return end
@@ -469,14 +410,12 @@ function RW_Weather:saveToXMLFile(handle, key)
     xmlFile:save(false, true)
 
     xmlFile:delete()
-
 end
 
 Weather.saveToXMLFile = Utils.appendedFunction(Weather.saveToXMLFile, RW_Weather.saveToXMLFile)
 
 
 function RW_Weather:loadFromXMLFile(handle, key)
-
     local xmlFile = XMLFile.wrap(handle)
 
     if xmlFile == nil then return end
@@ -484,7 +423,6 @@ function RW_Weather:loadFromXMLFile(handle, key)
     self.lastFogDay = xmlFile:getInt(key .. "#lastFogDay", 0)
 
     xmlFile:delete()
-
 end
 
 Weather.loadFromXMLFile = Utils.prependedFunction(Weather.loadFromXMLFile, RW_Weather.loadFromXMLFile)

@@ -8,7 +8,6 @@ source(modDirectory .. "src/gui/maps/GroundMoistureMap.lua")
 
 
 function InGameMenuMapFrameExtension.new()
-
 	local self = setmetatable({}, InGameMenuMapFrameExtension_mt)
 
 	self.valueMapToSelectorIndex = {}
@@ -20,32 +19,21 @@ function InGameMenuMapFrameExtension.new()
 	self.overlays = {}
 
 	return self
-
 end
 
-
 function InGameMenuMapFrameExtension:delete()
-
 	if self.soilStateOverlay ~= nil then delete(self.soilStateOverlay) end
 
 	if self.coverStateOverlays ~= nil then
-
 		for v9_ = 1, #self.coverStateOverlays do delete(self.coverStateOverlays[v9_].overlay) end
-
 	end
-
 end
-
 
 function InGameMenuMapFrameExtension:update(dt)
 
-
-
 end
 
-
 function InGameMenuMapFrameExtension:onSelectorChanged(state)
-
 	self.activeValueMapIndex = state
 	local controller = self.overlays[self.indexToOverlay[state]].controller
 	local v13_ = controller:getDisplayValues()
@@ -67,17 +55,13 @@ function InGameMenuMapFrameExtension:onSelectorChanged(state)
 	end
 	self.inGameMenuMapFrame.filterList:reloadData()
 	--self:updateMapOverlay()
-
 end
-
 
 function InGameMenuMapFrameExtension:updatePrecisionFarmingOverlays()
 	self:updateMapOverlay()
 end
 
-
 function InGameMenuMapFrameExtension:updateMapOverlay()
-
 	local overlay = self.overlays[self.indexToOverlay[self.activeValueMapIndex]]
 
 	if overlay ~= nil then
@@ -86,12 +70,9 @@ function InGameMenuMapFrameExtension:updateMapOverlay()
 		generateDensityMapVisualizationOverlay(overlay.id)
 		overlay.ready = false
 	end
-
 end
 
-
 function InGameMenuMapFrameExtension:onLoadMapFinished()
-
 	self.overlays = {
 		["groundMoisture"] = {
 			["id"] = createDensityMapVisualizationOverlay("groundMoisture", 1024, 1024),
@@ -109,72 +90,64 @@ function InGameMenuMapFrameExtension:onLoadMapFinished()
 
 	--local v26_ = self.precisionFarming.coverMap
 	--if v26_ ~= nil then
-		--self.coverStateOverlays = {}
-		--for v27_ = 1, v26_:getNumCoverOverlays() do
-			--local v28_ = {
-				--["overlay"] = createDensityMapVisualizationOverlay("coverState" .. v27_, 1024, 1024),
-				--["overlayReady"] = false
-			--}
-			--local v29_ = self.coverStateOverlays
-			--table.insert(v29_, v28_)
-		--end
+	--self.coverStateOverlays = {}
+	--for v27_ = 1, v26_:getNumCoverOverlays() do
+	--local v28_ = {
+	--["overlay"] = createDensityMapVisualizationOverlay("coverState" .. v27_, 1024, 1024),
+	--["overlayReady"] = false
+	--}
+	--local v29_ = self.coverStateOverlays
+	--table.insert(v29_, v28_)
+	--end
 	--end
 
 	--self.precisionFarming:registerVisualizationOverlay(self.soilStateOverlay)
 
 	--for v30_ = 1, #self.coverStateOverlays do
-		--self.precisionFarming:registerVisualizationOverlay(self.coverStateOverlays[v30_].overlay)
+	--self.precisionFarming:registerVisualizationOverlay(self.coverStateOverlays[v30_].overlay)
 	--end
-
 end
-
 
 function InGameMenuMapFrameExtension:onDrawStateOverlays(x, y, width, height)
 	--if not self.soilStateOverlayReady and getIsDensityMapVisualizationOverlayReady(self.soilStateOverlay) then
-		--self.soilStateOverlayReady = true
+	--self.soilStateOverlayReady = true
 	--end
 	--if self.soilStateOverlay ~= 0 then
-		--setOverlayUVs(self.soilStateOverlay, 0, 0, 0, 1, 1, 0, 1, 1)
-		--renderOverlay(self.soilStateOverlay, x, y, width, height)
+	--setOverlayUVs(self.soilStateOverlay, 0, 0, 0, 1, 1, 0, 1, 1)
+	--renderOverlay(self.soilStateOverlay, x, y, width, height)
 	--end
 	--local v36_ = self.precisionFarming:getValueMaps()[self.activeValueMapIndex]
 	--local v37_
 	--if v36_ == nil then
-		--v37_ = false
+	--v37_ = false
 	--else
-		--v37_ = v36_:getAllowCoverage()
+	--v37_ = v36_:getAllowCoverage()
 	--end
 	--if v37_ and self.precisionFarming.coverMap ~= nil then
-		--for v38_ = 1, #self.coverStateOverlays do
-			--local v39_ = self.coverStateOverlays[v38_]
-			--if not v39_.overlayReady and getIsDensityMapVisualizationOverlayReady(v39_.overlay) then
-				--v39_.overlayReady = true
-			--end
-			--if v39_.overlay ~= 0 then
-				--setOverlayUVs(v39_.overlay, 0, 0, 0, 1, 1, 0, 1, 1)
-				--renderOverlay(v39_.overlay, x, y, width, height)
-			--end
-		--end
+	--for v38_ = 1, #self.coverStateOverlays do
+	--local v39_ = self.coverStateOverlays[v38_]
+	--if not v39_.overlayReady and getIsDensityMapVisualizationOverlayReady(v39_.overlay) then
+	--v39_.overlayReady = true
+	--end
+	--if v39_.overlay ~= 0 then
+	--setOverlayUVs(v39_.overlay, 0, 0, 0, 1, 1, 0, 1, 1)
+	--renderOverlay(v39_.overlay, x, y, width, height)
+	--end
+	--end
 	--end
 
 	for _, overlay in pairs(self.overlays) do
-
 		if not overlay.ready and getIsDensityMapVisualizationOverlayReady(overlay.id) then overlay.ready = true end
 
 		if overlay.id ~= 0 then
 			setOverlayUVs(overlay.id, 0, 0, 0, 1, 1, 0, 1, 1)
 			renderOverlay(overlay.id, x, y, width, height)
 		end
-
 	end
-
 end
 
-
 function InGameMenuMapFrameExtension:overwriteGameFunctions()
-
 	g_realisticWeather:registerFunction(InGameMenuMapFrame, "onLoadMapFinished", function(inGameMenuMapFrame, superFunc)
-
 		superFunc(inGameMenuMapFrame)
 		self.inGameMenuMapFrame = inGameMenuMapFrame
 
@@ -183,15 +156,15 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 		end
 
 		--function inGameMenuMapFrame.onClickButtonResetStats()
-			--if self.precisionFarming.farmlandStatistics ~= nil then
-			--	self.precisionFarming.farmlandStatistics:onClickButtonResetStats()
-			--end
+		--if self.precisionFarming.farmlandStatistics ~= nil then
+		--	self.precisionFarming.farmlandStatistics:onClickButtonResetStats()
+		--end
 		--end
 
 		--function inGameMenuMapFrame.onClickButtonSwitchValues()
-			--if self.precisionFarming.farmlandStatistics ~= nil then
-				--self.precisionFarming.farmlandStatistics:onClickButtonSwitchValues()
-			--end
+		--if self.precisionFarming.farmlandStatistics ~= nil then
+		--self.precisionFarming.farmlandStatistics:onClickButtonSwitchValues()
+		--end
 		--end
 
 		--local v46_ = {}
@@ -200,32 +173,30 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 
 		--for _, v_u_47_ in ipairs(v46_) do
 
-			--local v48_ = inGameMenuMapFrame.contextActions
-			--local v49_ = {
-				--["title"] = v_u_47_.title,
-				--["callback"] = function()
-					--if inGameMenuMapFrame.selectedFarmland ~= nil then
-						--v_u_47_.callback(v_u_47_.callbackTarget, inGameMenuMapFrame.selectedFarmland.id)
-					--end
-					--return true
-				--end,
-				--["isActive"] = false
-			--}
-			--table.insert(v48_, v49_)
-			--local v50_ = self.precisionFarmingHotspotActionIndices
-			--local v51_ = #inGameMenuMapFrame.contextActions
-			--table.insert(v50_, v51_)
+		--local v48_ = inGameMenuMapFrame.contextActions
+		--local v49_ = {
+		--["title"] = v_u_47_.title,
+		--["callback"] = function()
+		--if inGameMenuMapFrame.selectedFarmland ~= nil then
+		--v_u_47_.callback(v_u_47_.callbackTarget, inGameMenuMapFrame.selectedFarmland.id)
+		--end
+		--return true
+		--end,
+		--["isActive"] = false
+		--}
+		--table.insert(v48_, v49_)
+		--local v50_ = self.precisionFarmingHotspotActionIndices
+		--local v51_ = #inGameMenuMapFrame.contextActions
+		--table.insert(v50_, v51_)
 
 		--end
 
 		self:onLoadMapFinished()
 		--pfModule:setMapFrame(p_u_44_)
-
 	end)
 
 
 	g_realisticWeather:registerFunction(InGameMenuMapFrame, "setupMapOverview", function(inGameMenuMapFrame, superFunc)
-
 		superFunc(inGameMenuMapFrame)
 
 		table.insert(inGameMenuMapFrame.mapSelectorTexts, g_i18n:getText("ui_header"))
@@ -234,7 +205,8 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 		inGameMenuMapFrame.dataTables[inGameMenuMapFrame.realisticWeatherPageIndex] = {}
 		inGameMenuMapFrame.filterStates[inGameMenuMapFrame.realisticWeatherPageIndex] = {}
 		inGameMenuMapFrame.numSelectedFilters[inGameMenuMapFrame.realisticWeatherPageIndex] = 0
-		inGameMenuMapFrame.subCategoryDotBox:addElement(inGameMenuMapFrame.subCategoryDotBox.elements[1]:clone(inGameMenuMapFrame.subCategoryDotBox))
+		inGameMenuMapFrame.subCategoryDotBox:addElement(inGameMenuMapFrame.subCategoryDotBox.elements[1]:clone(
+		inGameMenuMapFrame.subCategoryDotBox))
 		inGameMenuMapFrame.subCategoryDotBox:invalidateLayout()
 
 		for v_u_66_, v67_ in pairs(inGameMenuMapFrame.subCategoryDotBox.elements) do
@@ -278,15 +250,14 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 		end
 
 		for i, element in pairs(self.dotBox.elements) do
-
 			function element.getIsSelected()
 				return self.selector:getState() == i
 			end
-
 		end
 
 		self.dotBox:invalidateLayout()
-		self.helpButtonContainer = inGameMenuMapFrame.buttonDeselectAllContainer:clone(inGameMenuMapFrame.filterListContainer)
+		self.helpButtonContainer = inGameMenuMapFrame.buttonDeselectAllContainer:clone(inGameMenuMapFrame
+		.filterListContainer)
 		inGameMenuMapFrame.filterListContainer:addElement(self.helpButtonContainer)
 		local _, v79_ = getNormalizedScreenValues(0, 16)
 		self.buttonPositionDeselectAllDefault = inGameMenuMapFrame.buttonDeselectAllContainer.position[2]
@@ -313,79 +284,79 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 		inGameMenuMapFrame.ingameMap.onDrawPostIngameMapHotspotsCallback = InGameMenuMapFrame.onDrawPostIngameMapHotspots
 		inGameMenuMapFrame.ingameMap.onClickMapCallback = InGameMenuMapFrame.onClickMap
 		inGameMenuMapFrame.filterList:reloadData()
-
 	end)
 
 
-	g_realisticWeather:registerFunction(InGameMenuMapFrame, "onClickMapOverviewSelector", function(inGameMenuMapFrame, superFunc, state)
+	g_realisticWeather:registerFunction(InGameMenuMapFrame, "onClickMapOverviewSelector",
+		function(inGameMenuMapFrame, superFunc, state)
+			superFunc(inGameMenuMapFrame, state)
 
-		superFunc(inGameMenuMapFrame, state)
-
-		if state == inGameMenuMapFrame.realisticWeatherPageIndex then
-			self.selector:setVisible(true)
-			self.dotBox:setVisible(true)
-			self.helpButtonContainer:setVisible(true)
-			inGameMenuMapFrame.filterListContainer:setVisible(true)
-			inGameMenuMapFrame.buttonDeselectAllContainer:setVisible(true)
-			local _, v84_ = getNormalizedScreenValues(0, 60)
-			inGameMenuMapFrame.filterListContainer:setPosition(nil, self.filterListContainerPositionY - v84_)
-			inGameMenuMapFrame.filterListContainer:setSize(nil, self.filterListContainerSizeY - v84_, true)
-			inGameMenuMapFrame.filterList:setSize(nil, self.filterListSizeY - v84_, true)
-			inGameMenuMapFrame.filterListSlider:setSize(nil, self.filterListSliderSizeY - v84_, true)
-			inGameMenuMapFrame.filterListSlider.elements[1]:setSize(nil, self.filterListSliderElementSizeY - v84_, true)
-			inGameMenuMapFrame.buttonDeselectAllContainer:setPosition(nil, self.buttonPositionDeselectAll)
-			self:onSelectorChanged(self.selector:getState())
-			--pfModule:onMapFrameOpen(inGameMenuMapFrame)
-		else
-			self.selector:setVisible(false)
-			self.dotBox:setVisible(false)
-			self.helpButtonContainer:setVisible(false)
-			inGameMenuMapFrame.filterListContainer:setPosition(nil, self.filterListContainerPositionY)
-			inGameMenuMapFrame.filterListContainer:setSize(nil, self.filterListContainerSizeY, true)
-			inGameMenuMapFrame.filterList:setSize(nil, self.filterListSizeY, true)
-			inGameMenuMapFrame.filterListSlider:setSize(nil, self.filterListSliderSizeY, true)
-			inGameMenuMapFrame.filterListSlider.elements[1]:setSize(nil, self.filterListSliderElementSizeY, true)
-			inGameMenuMapFrame.buttonDeselectAllContainer:setPosition(nil, self.buttonPositionDeselectAllDefault)
-		end
-
-		--if inGameMenuMapFrame.precisionFarmingOnlyElements ~= nil then
-			--for _, v85_ in ipairs(inGameMenuMapFrame.precisionFarmingOnlyElements) do
-				--v85_:setVisible(state == inGameMenuMapFrame.precisionFarmingPageIndex)
-			--end
-		--end
-
-	end)
-
-
-	g_realisticWeather:registerFunction(InGameMenuMapFrame, "populateCellForItemInSection", function(inGameMenuMapFrame, superFunc, p88_, p89_, p90_, p91_)
-
-		superFunc(inGameMenuMapFrame, p88_, p89_, p90_, p91_)
-
-		if p88_ == inGameMenuMapFrame.contextButtonList or p88_ ~= inGameMenuMapFrame.contextButtonListFarmland then
-			return
-		elseif inGameMenuMapFrame.mapOverviewSelector:getState() == inGameMenuMapFrame.realisticWeatherPageIndex then
-			if self.valueFilterEnabled == nil then
-				p91_.allowSelected = true
+			if state == inGameMenuMapFrame.realisticWeatherPageIndex then
+				self.selector:setVisible(true)
+				self.dotBox:setVisible(true)
+				self.helpButtonContainer:setVisible(true)
+				inGameMenuMapFrame.filterListContainer:setVisible(true)
+				inGameMenuMapFrame.buttonDeselectAllContainer:setVisible(true)
+				local _, v84_ = getNormalizedScreenValues(0, 60)
+				inGameMenuMapFrame.filterListContainer:setPosition(nil, self.filterListContainerPositionY - v84_)
+				inGameMenuMapFrame.filterListContainer:setSize(nil, self.filterListContainerSizeY - v84_, true)
+				inGameMenuMapFrame.filterList:setSize(nil, self.filterListSizeY - v84_, true)
+				inGameMenuMapFrame.filterListSlider:setSize(nil, self.filterListSliderSizeY - v84_, true)
+				inGameMenuMapFrame.filterListSlider.elements[1]:setSize(nil, self.filterListSliderElementSizeY - v84_, true)
+				inGameMenuMapFrame.buttonDeselectAllContainer:setPosition(nil, self.buttonPositionDeselectAll)
+				self:onSelectorChanged(self.selector:getState())
+				--pfModule:onMapFrameOpen(inGameMenuMapFrame)
 			else
-				p91_.allowSelected = self.valueFilterEnabled[p90_]
+				self.selector:setVisible(false)
+				self.dotBox:setVisible(false)
+				self.helpButtonContainer:setVisible(false)
+				inGameMenuMapFrame.filterListContainer:setPosition(nil, self.filterListContainerPositionY)
+				inGameMenuMapFrame.filterListContainer:setSize(nil, self.filterListContainerSizeY, true)
+				inGameMenuMapFrame.filterList:setSize(nil, self.filterListSizeY, true)
+				inGameMenuMapFrame.filterListSlider:setSize(nil, self.filterListSliderSizeY, true)
+				inGameMenuMapFrame.filterListSlider.elements[1]:setSize(nil, self.filterListSliderElementSizeY, true)
+				inGameMenuMapFrame.buttonDeselectAllContainer:setPosition(nil, self.buttonPositionDeselectAllDefault)
 			end
-		else
-			p91_.allowSelected = true
-			return
-		end
 
-	end)
-
-
-	g_realisticWeather:registerFunction(InGameMenuMapFrame, "getHasChangeableFilterList", function(inGameMenuMapFrame, superFunc, ...)
-		return superFunc(inGameMenuMapFrame, ...) or inGameMenuMapFrame.mapOverviewSelector:getState() == inGameMenuMapFrame.realisticWeatherPageIndex
-	end)
+			--if inGameMenuMapFrame.precisionFarmingOnlyElements ~= nil then
+			--for _, v85_ in ipairs(inGameMenuMapFrame.precisionFarmingOnlyElements) do
+			--v85_:setVisible(state == inGameMenuMapFrame.precisionFarmingPageIndex)
+			--end
+			--end
+		end)
 
 
-	g_realisticWeather:registerFunction(InGameMenuMapFrame, "generateOverviewOverlay", function(inGameMenuMapFrame, superFunc, ...)
-		superFunc(inGameMenuMapFrame, ...)
-		self:updateMapOverlay()
-	end)
+	g_realisticWeather:registerFunction(InGameMenuMapFrame, "populateCellForItemInSection",
+		function(inGameMenuMapFrame, superFunc, p88_, p89_, p90_, p91_)
+			superFunc(inGameMenuMapFrame, p88_, p89_, p90_, p91_)
+
+			if p88_ == inGameMenuMapFrame.contextButtonList or p88_ ~= inGameMenuMapFrame.contextButtonListFarmland then
+				return
+			elseif inGameMenuMapFrame.mapOverviewSelector:getState() == inGameMenuMapFrame.realisticWeatherPageIndex then
+				if self.valueFilterEnabled == nil then
+					p91_.allowSelected = true
+				else
+					p91_.allowSelected = self.valueFilterEnabled[p90_]
+				end
+			else
+				p91_.allowSelected = true
+				return
+			end
+		end)
+
+
+	g_realisticWeather:registerFunction(InGameMenuMapFrame, "getHasChangeableFilterList",
+		function(inGameMenuMapFrame, superFunc, ...)
+			return superFunc(inGameMenuMapFrame, ...) or
+			inGameMenuMapFrame.mapOverviewSelector:getState() == inGameMenuMapFrame.realisticWeatherPageIndex
+		end)
+
+
+	g_realisticWeather:registerFunction(InGameMenuMapFrame, "generateOverviewOverlay",
+		function(inGameMenuMapFrame, superFunc, ...)
+			superFunc(inGameMenuMapFrame, ...)
+			self:updateMapOverlay()
+		end)
 
 
 	if 1 == 1 then return end
@@ -443,7 +414,8 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 		local v118_ = false
 		if self.precisionFarmingHotspotActionIndices ~= nil and (p115_.mapOverviewSelector:getState() == p115_.precisionFarmingPageIndex and (p116_ ~= nil and p116_:isa(FarmlandHotspot))) then
 			local v119_ = p116_:getFarmland()
-			v118_ = g_farmlandManager:getFarmlandOwner(v119_.id) == g_currentMission:getFarmId() and v119_.totalFieldArea ~= nil and true or v118_
+			v118_ = g_farmlandManager:getFarmlandOwner(v119_.id) == g_currentMission:getFarmId() and
+			v119_.totalFieldArea ~= nil and true or v118_
 		end
 		p114_(p115_, p116_, ...)
 		if v118_ then
@@ -461,25 +433,28 @@ function InGameMenuMapFrameExtension:overwriteGameFunctions()
 			p115_:resetUIDeadzones()
 		end
 	end)
-	pfModule:overwriteGameFunction(InGameMenuMapUtil, "showContextBox", function(p122_, p123_, p124_, p125_, p126_, p127_, p128_, p129_, p130_, p131_, p132_, ...)
-		p122_(p123_, p124_, p125_, p126_, p127_, p128_, p129_, p130_, p131_, p132_, ...)
-		if p123_ ~= nil and p132_ then
-			local v133_ = p124_:getFarmland()
-			if v133_ ~= nil then
-				local v134_
-				if v133_.totalFieldArea == nil then
-					v134_ = g_i18n:formatMoney(v133_.price, 0, true, false)
-				else
-					v134_ = string.format("%s (%s / ha)", g_i18n:formatMoney(v133_.price, 0, true, false), g_i18n:formatMoney(v133_.price / v133_.totalFieldArea, 0, true, false))
-				end
-				p123_:getDescendantByName("farmlandValue"):setText(v134_)
-				if v133_.totalFieldArea ~= nil then
-					local v135_ = string.format("%s (%s: %s)", g_i18n:formatArea(v133_.areaInHa, 2), g_i18n:getText("contract_details_field"), g_i18n:formatArea(v133_.totalFieldArea, 2))
-					p123_:getDescendantByName("farmlandSize"):setText(v135_)
+	pfModule:overwriteGameFunction(InGameMenuMapUtil, "showContextBox",
+		function(p122_, p123_, p124_, p125_, p126_, p127_, p128_, p129_, p130_, p131_, p132_, ...)
+			p122_(p123_, p124_, p125_, p126_, p127_, p128_, p129_, p130_, p131_, p132_, ...)
+			if p123_ ~= nil and p132_ then
+				local v133_ = p124_:getFarmland()
+				if v133_ ~= nil then
+					local v134_
+					if v133_.totalFieldArea == nil then
+						v134_ = g_i18n:formatMoney(v133_.price, 0, true, false)
+					else
+						v134_ = string.format("%s (%s / ha)", g_i18n:formatMoney(v133_.price, 0, true, false),
+							g_i18n:formatMoney(v133_.price / v133_.totalFieldArea, 0, true, false))
+					end
+					p123_:getDescendantByName("farmlandValue"):setText(v134_)
+					if v133_.totalFieldArea ~= nil then
+						local v135_ = string.format("%s (%s: %s)", g_i18n:formatArea(v133_.areaInHa, 2),
+							g_i18n:getText("contract_details_field"), g_i18n:formatArea(v133_.totalFieldArea, 2))
+						p123_:getDescendantByName("farmlandSize"):setText(v135_)
+					end
 				end
 			end
-		end
-	end)
+		end)
 	pfModule:overwriteGameFunction(InGameMenuMapFrame, "resetUIDeadzones", function(p136_, p137_)
 		p136_(p137_)
 		if p137_.deadzoneElements ~= nil then

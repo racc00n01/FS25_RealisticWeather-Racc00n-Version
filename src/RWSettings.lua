@@ -5,101 +5,8 @@ g_gui:loadProfiles(modDirectory .. "gui/guiProfiles.xml")
 
 RWSettings.SETTINGS = {
 
-	["witheringEnabled"] = {
-		["index"] = 2,
-		["type"] = "BinaryOption",
-		["dynamicTooltip"] = true,
-		["default"] = 2,
-		["binaryType"] = "offOn",
-		["values"] = { false, true },
-		["callback"] = MoistureSystem.onSettingChanged
-	},
-
-	["witheringChance"] = {
-		["index"] = 3,
-		["type"] = "MultiTextOption",
-		["default"] = 6,
-		["valueType"] = "float",
-		["values"] = { 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5 },
-		["callback"] = MoistureSystem.onSettingChanged,
-		["dependancy"] = {
-			["name"] = "witheringEnabled",
-			["state"] = 2
-		}
-	},
-
-	["rebuildMoistureMap"] = {
-		["index"] = 1,
-		["type"] = "Button",
-		["ignore"] = true,
-		["callback"] = MoistureSystem.onClickRebuildMoistureMap
-	},
-
-	["performanceIndex"] = {
-		["index"] = 4,
-		["type"] = "MultiTextOption",
-		["default"] = MoistureSystem.getDefaultPerformanceIndex(),
-		["valueType"] = "int",
-		["values"] = { 2, 3, 4, 5, 6, 7, 8, 9, 10 },
-		["callback"] = MoistureSystem.onSettingChanged
-	},
-
-	["moistureGainModifier"] = {
-		["index"] = 5,
-		["type"] = "MultiTextOption",
-		["default"] = 10,
-		["valueType"] = "float",
-		["values"] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 },
-		["callback"] = MoistureSystem.onSettingChanged
-	},
-
-	["moistureLossModifier"] = {
-		["index"] = 6,
-		["type"] = "MultiTextOption",
-		["default"] = 10,
-		["valueType"] = "float",
-		["values"] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 },
-		["callback"] = MoistureSystem.onSettingChanged
-	},
-
-	["grassMoistureGainModifier"] = {
-		["index"] = 7,
-		["type"] = "MultiTextOption",
-		["default"] = 10,
-		["valueType"] = "float",
-		["values"] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 },
-		["callback"] = GrassMoistureSystem.onSettingChanged
-	},
-
-	["grassMoistureLossModifier"] = {
-		["index"] = 8,
-		["type"] = "MultiTextOption",
-		["default"] = 10,
-		["valueType"] = "float",
-		["values"] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 },
-		["callback"] = GrassMoistureSystem.onSettingChanged
-	},
-
-	["moistureOverlayBehaviour"] = {
-		["index"] = 9,
-		["type"] = "MultiTextOption",
-		["dynamicTooltip"] = true,
-		["default"] = 3,
-		["values"] = { 1, 2, 3 },
-		["callback"] = MoistureSystem.onSettingChanged
-	},
-
-	["moistureFrameBehaviour"] = {
-		["index"] = 10,
-		["type"] = "BinaryOption",
-		["dynamicTooltip"] = true,
-		["default"] = 2,
-		["values"] = { 1, 2 },
-		["callback"] = MoistureSystem.onSettingChanged
-	},
-
 	["blizzardsEnabled"] = {
-		["index"] = 11,
+		["index"] = 1,
 		["type"] = "BinaryOption",
 		["dynamicTooltip"] = true,
 		["default"] = 2,
@@ -109,7 +16,7 @@ RWSettings.SETTINGS = {
 	},
 
 	["droughtsEnabled"] = {
-		["index"] = 12,
+		["index"] = 2,
 		["type"] = "BinaryOption",
 		["dynamicTooltip"] = true,
 		["default"] = 2,
@@ -118,33 +25,14 @@ RWSettings.SETTINGS = {
 		["callback"] = RW_Weather.onSettingChanged
 	},
 
-	["puddlesEnabled"] = {
-		["index"] = 13,
-		["type"] = "BinaryOption",
-		["dynamicTooltip"] = true,
-		["default"] = 2,
-		["binaryType"] = "offOn",
-		["values"] = { false, true },
-		["callback"] = PuddleSystem.onSettingChanged
-	},
-
 	["fireEnabled"] = {
-		["index"] = 14,
+		["index"] = 3,
 		["type"] = "BinaryOption",
 		["dynamicTooltip"] = true,
 		["default"] = 2,
 		["binaryType"] = "offOn",
 		["values"] = { false, true },
 		["callback"] = FireSystem.onSettingChanged
-	},
-
-	["moistureYieldFactor"] = {
-		["index"] = 15,
-		["type"] = "MultiTextOption",
-		["default"] = 11,
-		["valueType"] = "float",
-		["values"] = { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 },
-		["callback"] = RW_FSBaseMission.onSettingChanged
 	}
 
 }
@@ -198,14 +86,9 @@ function RWSettings.saveToXMLFile(name, state)
 		if savegame ~= nil and savegame.savegameDirectory ~= nil then
 
 			local path = savegame.savegameDirectory .. "/rwSettings.xml"
-			--local xmlFile = XMLFile.loadIfExists("rwSettings", path)
 			local xmlFile = XMLFile.create("rwSettings", path, "settings")
 
-			--if xmlFile == nil then xmlFile = XMLFile.create("rwSettings", path, "settings") end
-
 			if xmlFile ~= nil then
-
-				--xmlFile:setInt("settings." .. name .. "#value", state)
 
 				for settingName, setting in pairs(RWSettings.SETTINGS) do
 					if setting.ignore then continue end
@@ -406,7 +289,7 @@ function RWSettings.applyDefaultSettings()
 
 			for _, s in pairs(RWSettings.SETTINGS) do
 				if s.dependancy and s.dependancy.name == name and s.element ~= nil then
-					s.element:setDisabled(s.dependancy.state ~= state)
+					s.element:setDisabled(s.dependancy.state ~= setting.state)
 				end
 			end
 		end

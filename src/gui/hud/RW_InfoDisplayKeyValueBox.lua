@@ -3,7 +3,6 @@ local rw_InfoDisplayKeyValueBox_mt = Class(RW_InfoDisplayKeyValueBox, InfoDispla
 
 
 function RW_InfoDisplayKeyValueBox.new(infoDisplay, uiScale)
-
     local self = InfoDisplayBox.new(infoDisplay, uiScale, rw_InfoDisplayKeyValueBox_mt)
 
     self.lines = {}
@@ -22,22 +21,16 @@ function RW_InfoDisplayKeyValueBox.new(infoDisplay, uiScale)
     self.warningIcon:setColor(r, g, b, a)
 
     return self
-
 end
 
-
 function RW_InfoDisplayKeyValueBox:delete()
-
     self.bgScale:delete()
     self.bgBottom:delete()
     self.bgTop:delete()
     self.warningIcon:delete()
-
 end
 
-
 function RW_InfoDisplayKeyValueBox:storeScaledValues()
-
     local infoDisplay = self.infoDisplay
     local x, z = infoDisplay:scalePixelValuesToScreenVector(340, 6)
     local y = infoDisplay:scalePixelToScreenHeight(6)
@@ -74,22 +67,17 @@ function RW_InfoDisplayKeyValueBox:storeScaledValues()
     local g, h = infoDisplay:scalePixelValuesToScreenVector(10, -4)
     self.warningIconOffsetX = g
     self.warningIconOffsetY = h
-
 end
 
-
 function RW_InfoDisplayKeyValueBox:draw(posX, posY)
-
     local leftX = posX - self.boxWidth
     local height = self.titleAndBoxHeight
 
     for _, line in ipairs(self.lines) do
-
         if line.isActive then
             height = height + self.lineHeight
             if line.isWarning then height = height + math.abs(self.warningOffsetY) end
         end
-
     end
 
     self.bgScale:setDimension(nil, height - self.bgBottom.height - self.bgTop.height)
@@ -118,7 +106,6 @@ function RW_InfoDisplayKeyValueBox:draw(posX, posY)
     local i = HUD.COLOR.INACTIVE
 
     for _, line in ipairs(self.lines) do
-
         if line.isActive then
             local key = line.key
             local value = line.value
@@ -133,7 +120,6 @@ function RW_InfoDisplayKeyValueBox:draw(posX, posY)
                 self.warningIcon:setPosition(e, g + self.warningIconOffsetY)
                 self.warningIcon:render()
             else
-
                 setTextColor(unpack(line.colour or { 1, 1, 1, 1 }))
 
                 setTextAlignment(RenderText.ALIGN_LEFT)
@@ -144,13 +130,13 @@ function RW_InfoDisplayKeyValueBox:draw(posX, posY)
                 local k = getTextWidth(self.valueTextSize, value)
                 local l = c + j + 3 * g_pixelSizeX
                 local m = f - k - l - 3 * g_pixelSizeX
-                drawDashedLine(l, g, m, self.dashedLineHeight, self.dashWidth, self.dashGapWidth, i[1], i[2], i[3], i[4], true)
+                drawDashedLine(l, g, m, self.dashedLineHeight, self.dashWidth, self.dashGapWidth, i[1], i[2], i[3], i[4],
+                    true)
                 setTextBold(false)
             end
 
             g = g + self.lineToLineOffsetY
         end
-
     end
 
     local newPosY = self.bgTop.y + self.bgTop.height
@@ -159,32 +145,24 @@ function RW_InfoDisplayKeyValueBox:draw(posX, posY)
     self.doShowNextFrame = false
 
     return posX, newPosY
-
 end
-
 
 function RW_InfoDisplayKeyValueBox:canDraw()
     return self.doShowNextFrame
 end
 
-
 function RW_InfoDisplayKeyValueBox:showNextFrame()
     self.doShowNextFrame = true
 end
 
-
 function RW_InfoDisplayKeyValueBox:clear()
-
     for _, lines in ipairs(self.lines) do
         lines.isActive = false
     end
     self.currentLineIndex = 0
-
 end
 
-
 function RW_InfoDisplayKeyValueBox:addLine(key, value, colour, accentuate)
-
     self.currentLineIndex = self.currentLineIndex + 1
     local line = self.lines[self.currentLineIndex]
     if line == nil then
@@ -201,15 +179,11 @@ function RW_InfoDisplayKeyValueBox:addLine(key, value, colour, accentuate)
     line.colour = colour or { 1, 1, 1, 1 }
     line.isWarning = accentuate
     line.isActive = true
-
 end
 
-
 function RW_InfoDisplayKeyValueBox:setTitle(title)
-
     local newTitle = utf8ToUpper(title)
     if newTitle ~= self.title then
         self.title = Utils.limitTextToWidth(newTitle, self.titleTextSize, self.titleMaxWidth, false, "...")
     end
-
 end

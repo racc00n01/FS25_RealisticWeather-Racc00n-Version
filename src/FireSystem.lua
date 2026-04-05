@@ -251,24 +251,23 @@ function FireSystem:onHourChanged()
 
     if math.random() >= probability then return end
 
-    local moistureSystem = g_currentMission.moistureSystem
+    local mapWidth, mapHeight = 2048, 2048
 
     for i = 1, 25 do
 
-        local cell = moistureSystem:getRandomCell()
+        local x = math.random() * mapWidth - mapWidth / 2
+        local z = math.random() * mapHeight - mapHeight / 2
 
-        if cell == nil or cell.moisture > 0.075 then continue end
-
-        local groundTypeValue = g_currentMission.fieldGroundSystem:getValueAtWorldPos(FieldDensityMap.GROUND_TYPE, cell.x, 0, cell.z)
+        local groundTypeValue = g_currentMission.fieldGroundSystem:getValueAtWorldPos(FieldDensityMap.GROUND_TYPE, x, 0, z)
         local groundType = FieldGroundType.getTypeByValue(groundTypeValue)
 
 	    if groundType == FieldGroundType.CULTIVATED or groundType == FieldGroundType.NONE then continue end
 
-        local fieldId = g_farmlandManager:getFarmlandIdAtWorldPosition(cell.x, cell.z)
+        local fieldId = g_farmlandManager:getFarmlandIdAtWorldPosition(x, z)
 
         if fieldId == nil or fieldId == 0 then continue end
 
-        self:startFire(cell.x, cell.z, fieldId)
+        self:startFire(x, z, fieldId)
         break
 
     end
@@ -313,9 +312,7 @@ function FireSystem:consoleCommandSpawnFire()
 
     self:startFire(x, z, fieldId)
 
-    local moistureSystem = g_currentMission.moistureSystem
-
-    return string.format("Successfully spawned fire: %.2fx (%.0fx), %.2fz (%.2fz), field #%s", x, moistureSystem.mapWidth / 2 + x, z, moistureSystem.mapHeight / 2 + z, fieldId)
+    return string.format("Successfully spawned fire: %.2fx, %.2fz, field #%s", x, z, tostring(fieldId))
 
 end
 
